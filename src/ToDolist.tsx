@@ -2,6 +2,8 @@ import {FilterValuesType, TaskType,} from './App';
 import React, {ChangeEvent} from "react";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 
 // 
@@ -34,16 +36,24 @@ function TodoList(props: TodoListPropsType) {
 
         return (
             <li key={task.id}>
-                <input
+                <Checkbox
+                    color={"primary"}
+                    checked={task.isDone}
+                    onChange={changeStatus} />
+
+                {/*<input
                     type="checkbox"
                     checked={task.isDone}
-                    onChange={changeStatus}/>
+                    onChange={changeStatus}/>*/}
                     <EditableSpan title={task.title} changeTitle={changeTaskTitle} />
                 {/*<span>{task.title}</span>*/}
-                <button
+               {/* <button
                     className="btn-remove"
                     onClick={removeTask}>X
-                </button>
+                </button>*/}
+                <IconButton onClick={removeTask}>
+                    <Delete />
+                </IconButton>
             </li>
         )
 
@@ -69,28 +79,45 @@ function TodoList(props: TodoListPropsType) {
         <div>
             <h3>
                 <EditableSpan title={props.title} changeTitle={changeTodoListTitle} />
-                <button
+                {/*<button
                     onClick={removeTodoList}
-                >X</button>
+                >X</button>*/}
+                <IconButton onClick={removeTodoList}>
+                    <Delete />
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTask} />
-            <ul>
+            <ul style={{listStyle: "none", padding:"0px"}}>
                 {tasks}
             </ul>
             <div>
-                <button
-                    className={props.todoListFilter === "all" ? "active-filter" : ""}
+                <Button
+                    size={"small"}
+                    color={"primary"}
+                    variant={props.todoListFilter === "all" ? "outlined" : "contained"}
+                    // className={props.todoListFilter === "all" ? "active-filter" : ""}
                     onClick={setAllFilterValue}
                 >All
-                </button>
-                <button
-                    className={props.todoListFilter === "active" ? "active-filter" : ""}
-                    onClick={setActiveFilterValue}>Active
-                </button>
-                <button
-                    className={props.todoListFilter === "complete" ? "active-filter" : ""}
-                    onClick={setCompleteFilterValue}>Completed
-                </button>
+                </Button>
+                <Button
+                    style={{marginRight: "5px"}}
+                    size={"small"}
+                    color={"primary"}
+                    variant={props.todoListFilter === "active" ? "outlined" : "contained"}
+                    // className={props.todoListFilter === "all" ? "active-filter" : ""}
+                    onClick={setActiveFilterValue}
+                >Active
+                </Button>
+                <Button
+
+                    size={"small"}
+                    color={"primary"}
+                    variant={props.todoListFilter === "complete" ? "outlined" : "contained"}
+                    // className={props.todoListFilter === "all" ? "active-filter" : ""}
+                    onClick={setCompleteFilterValue}
+                >Complete
+                </Button>
+
             </div>
         </div>
 
