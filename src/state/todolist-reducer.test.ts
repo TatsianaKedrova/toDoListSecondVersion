@@ -1,6 +1,13 @@
-import {RemoveTodoListAC, todolistReducer} from './todolist-reducer';
+import {
+    AddTodoListAC,
+    ChangeTodoListFilterAC,
+    ChangeTodoListTitleAC,
+    RemoveTodoListAC,
+    todolistReducer
+} from './todolist-reducer';
 import {v1} from 'uuid';
-import {FilterValuesType, TodoListType} from '../App';
+import {FilterValuesType, TasksStateType, TodoListType} from '../App';
+import {tasksReducer} from "./tasks-reducer";
 
 test('correct todolist should be removed', () => {
     let todolistId1 = v1();
@@ -25,7 +32,7 @@ test('correct todolist should be added', () => {
         {id: v1(), title: title1, filter: "all"},
     ]
 
-    const endState = todolistReducer(addTodoList, { type: "ADD-TODOLIST", title: title2})
+    const endState = todolistReducer(addTodoList, AddTodoListAC(title2))
 
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe(title2);
@@ -39,13 +46,13 @@ test("todolist's title should be changed", () => {
         {id: todoListId1, title: "DanceMoves", filter: "all"},
     ]
 
-    const endState = todolistReducer(changeTodoList, { type: "CHANGE-TODOLIST-TITLE", title: title1, todoListID: todoListId1})
+    const endState = todolistReducer(changeTodoList, ChangeTodoListTitleAC(title1, todoListId1))
 
     expect(endState.length).toBe(1);
     expect(endState[0].title).toBe(title1);
 });
 
-test("todolist's title should be changed", () => {
+test("todolist's filter should be changed", () => {
     let newFilterValue: FilterValuesType = "active";
     let todoListId1 = v1();
 
@@ -53,8 +60,26 @@ test("todolist's title should be changed", () => {
         {id: todoListId1, title: "DanceMoves", filter: "all"},
     ]
 
-    const endState = todolistReducer(changeTodoListFilter, { type: "CHANGE-TODOLIST-FILTER", newFilterValue: newFilterValue, todoListID: todoListId1})
+    const endState = todolistReducer(changeTodoListFilter, ChangeTodoListFilterAC(newFilterValue,todoListId1))
 
     expect(endState.length).toBe(1);
     expect(endState[0].filter).toBe(newFilterValue);
+    expect(endState[0].filter).toBe("active");
+});
+
+test('ids should be equals', () => {
+    const startTasksState: TasksStateType = {};
+    const startTodolistsState: Array<TodoListType> = [];
+
+    const action = AddTodoListAC("My nearest future plans");
+
+    const endTasksState = tasksReducer(startTasksState, action)
+    const endTodolistsState = todolistReducer(startTodolistsState, action)
+
+    const keys = Object.keys(endTasksState);
+    const idFromTasks = keys[0];
+    const idFromTodolists = endTodolistsState[0].id;
+
+    expect(idFromTasks).toBe(action.todolistId);
+    expect(idFromTodolists).toBe(action.todolistId);
 });
