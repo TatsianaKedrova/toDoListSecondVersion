@@ -36,13 +36,13 @@ export type TasksStateType = {
 
 
 
-function AppWithReducers() {
+function AppWithRedux() {
 
     const todoList_1 = v1();
     const todoList_2 = v1();
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
-        [todoList_1]: [
+       /* [todoList_1]: [
             {id: v1(), title: "HTML", isDone: true},
             {id: v1(), title: "CSS", isDone: true},
             {id: v1(), title: "JAVASCRIPT", isDone: false},
@@ -52,12 +52,12 @@ function AppWithReducers() {
             {id: v1(), title: "HTML", isDone: true},
             {id: v1(), title: "CSS", isDone: true},
             {id: v1(), title: "JAVASCRIPT", isDone: false},
-        ],
+        ],*/
 
     });
     const [todoLists, dispatchToTodolists] = useReducer(todolistReducer,[
-        {id: todoList_1, title: "What to cook today?", filter: "all"},
-        {id: todoList_2, title: "Where to go today?", filter: "all"},
+        /*{id: todoList_1, title: "What to cook today?", filter: "all"},
+        {id: todoList_2, title: "Where to go today?", filter: "all"},*/
     ])
 
     function removeTask(taskID: string, todoListID: string) {
@@ -168,6 +168,6 @@ function AppWithReducers() {
     );
 };
 
-export default AppWithReducers;
+export default AppWithRedux;
 
 

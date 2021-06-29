@@ -26,7 +26,9 @@ type ChangeTodoListFilterType = {
 
 type ActionType = RemoveTodoListType | AddTodoListType | ChangeTodoListTitleType | ChangeTodoListFilterType;
 
-export const todolistReducer = (todoLists: Array<TodoListType>, action: ActionType): Array<TodoListType> => {
+let initialState: Array<TodoListType> = [];
+
+export const todolistReducer = (todoLists: Array<TodoListType> = initialState, action: ActionType): Array<TodoListType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             let copyState = [...todoLists];

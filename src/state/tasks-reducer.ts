@@ -39,7 +39,8 @@ type ActionType =
 const todoList_1 = v1();
 const todoList_2 = v1();
 
-const initState = {
+const initState: TasksStateType = {};
+/*{
     [todoList_1]: [
         {id: v1(), title: "HTML", isDone: true},
         {id: v1(), title: "CSS", isDone: true},
@@ -52,7 +53,7 @@ const initState = {
         {id: v1(), title: "JAVASCRIPT", isDone: false},
     ],
 
-}
+}*/
 export const tasksReducer = (state: TasksStateType = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case "ADD-TASK":
@@ -87,7 +88,7 @@ export const tasksReducer = (state: TasksStateType = initState, action: ActionTy
         }
 
         case 'ADD-TODOLIST':
-            return {...state, [action.todolistId]: []}
+            return {...state, [action.todoListId]: []}
         case "REMOVE-TODOLIST": {
             let copyState = {...state};
             delete copyState[action.todoListID]
