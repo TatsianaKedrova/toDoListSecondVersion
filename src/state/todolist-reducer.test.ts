@@ -24,13 +24,6 @@ beforeEach(() => {
 
 
 test('correct todolist should be removed', () => {
-    /*let todolistId1 = v1();
-    let todolistId2 = v1();*/
-
-    /*const startState: Array<TodoListType> = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
-    ]*/
 
     const endState = todolistReducer(startState, RemoveTodoListAC(todolistId1))
 
@@ -42,10 +35,6 @@ test('correct todolist should be added', () => {
     let title1 = "DanceStyles";
     let title2 = "StretchingClasses";
 
-   /* const addTodoList: Array<TodoListType> = [
-        {id: todolistId1, title: title1, filter: "all"},
-    ]*/
-
     const endState = todolistReducer(startState, AddTodoListAC(title2))
 
     expect(endState.length).toBe(3);
@@ -54,11 +43,6 @@ test('correct todolist should be added', () => {
 
 test("todolist's title should be changed", () => {
     let title1 = "DanceStyles";
-    // let todoListId1 = v1();
-
-    /*const changeTodoList: Array<TodoListType> = [
-        {id: todoListId1, title: "DanceMoves", filter: "all"},
-    ]*/
 
     const endState = todolistReducer(startState, ChangeTodoListTitleAC(title1, todolistId1))
 
@@ -68,11 +52,6 @@ test("todolist's title should be changed", () => {
 
 test("todolist's filter should be changed", () => {
     let newFilterValue: FilterValuesType = "active";
-    // let todoListId1 = v1();
-
-   /* const changeTodoListFilter: Array<TodoListType> = [
-        {id: todoListId1, title: "DanceMoves", filter: "all"},
-    ]*/
 
     const endState = todolistReducer(startState, ChangeTodoListFilterAC(newFilterValue,todolistId1))
 
