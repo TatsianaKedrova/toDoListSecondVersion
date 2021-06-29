@@ -29,7 +29,7 @@ type ChangeTaskStatus = {
 }
 
 type ActionType =
-    AddTaskType
+      AddTaskType
     | RemoveTaskType
     | ChangeTaskStatus
     | ChangeTaskTitleType
@@ -53,7 +53,6 @@ const initState = {
     ],
 
 }
-// export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
 export const tasksReducer = (state: TasksStateType = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case "ADD-TASK":
