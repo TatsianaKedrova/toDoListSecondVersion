@@ -32,7 +32,6 @@ test('correct todolist should be removed', () => {
 });
 
 test('correct todolist should be added', () => {
-    let title1 = "DanceStyles";
     let title2 = "StretchingClasses";
 
     const endState = todolistReducer(startState, AddTodoListAC(title2))
