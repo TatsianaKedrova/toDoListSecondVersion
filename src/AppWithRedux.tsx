@@ -1,5 +1,4 @@
-import React, {useReducer, useState} from "react";
-import { v1 } from "uuid";
+import React, {useReducer} from "react";
 import './App.css';
 import TodoList from "./ToDolist";
 import AddItemForm from "./AddItemForm";
@@ -16,11 +15,6 @@ import {
 
 
 
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean
-}
 
 export type FilterValuesType = "all" | "active" | "complete";
 
@@ -30,16 +24,7 @@ export type TodoListType = {
     filter: FilterValuesType,
 }
 
-export type TasksStateType = {
-    [key: string] : Array<TaskType>
-}
-
-
-
 function AppWithRedux() {
-
-    const todoList_1 = v1();
-    const todoList_2 = v1();
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {});
     const [todoLists, dispatchToTodolists] = useReducer(todolistReducer,[])
@@ -150,7 +135,7 @@ function AppWithRedux() {
             </Container>
         </div>
     );
-};
+}
 
 export default AppWithRedux;
 
