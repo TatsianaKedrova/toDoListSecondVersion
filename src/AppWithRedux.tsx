@@ -41,24 +41,8 @@ function AppWithRedux() {
     const todoList_1 = v1();
     const todoList_2 = v1();
 
-    const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
-       /* [todoList_1]: [
-            {id: v1(), title: "HTML", isDone: true},
-            {id: v1(), title: "CSS", isDone: true},
-            {id: v1(), title: "JAVASCRIPT", isDone: false},
-
-        ],
-        [todoList_2]: [
-            {id: v1(), title: "HTML", isDone: true},
-            {id: v1(), title: "CSS", isDone: true},
-            {id: v1(), title: "JAVASCRIPT", isDone: false},
-        ],*/
-
-    });
-    const [todoLists, dispatchToTodolists] = useReducer(todolistReducer,[
-        /*{id: todoList_1, title: "What to cook today?", filter: "all"},
-        {id: todoList_2, title: "Where to go today?", filter: "all"},*/
-    ])
+    const [tasks, dispatchToTasks] = useReducer(tasksReducer, {});
+    const [todoLists, dispatchToTodolists] = useReducer(todolistReducer,[])
 
     function removeTask(taskID: string, todoListID: string) {
         const action = RemoveTaskAC(taskID, todoListID);
