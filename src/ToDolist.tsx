@@ -24,9 +24,8 @@ type TodoListPropsType = {
 
 function TodoList(props: TodoListPropsType) {
 
-    /*const [title, setTitle] = useState<string>("");
-    const [error, setError] = useState<string | null>(null)
-*/
+    console.log("Todolist called");
+
     const tasks = props.tasks.map(task => {
         const removeTask = () => props.removeTask(task.id, props.id)
         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, e.currentTarget.checked, props.id)
