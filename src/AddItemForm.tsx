@@ -54,6 +54,6 @@ const AddItemForm = React.memo((props: AddItemPropsType) => {
 
         </div>
     );
-})
+});
 
 export default AddItemForm;

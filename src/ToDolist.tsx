@@ -1,5 +1,5 @@
 import {FilterValuesType, TaskType,} from './App';
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
@@ -22,7 +22,7 @@ type TodoListPropsType = {
 }
 
 
-function TodoList(props: TodoListPropsType) {
+const TodoList = React.memo((props: TodoListPropsType) => {
 
     console.log("Todolist called");
 
@@ -40,16 +40,8 @@ function TodoList(props: TodoListPropsType) {
                     checked={task.isDone}
                     onChange={changeStatus} />
 
-                {/*<input
-                    type="checkbox"
-                    checked={task.isDone}
-                    onChange={changeStatus}/>*/}
                     <EditableSpan title={task.title} changeTitle={changeTaskTitle} />
-                {/*<span>{task.title}</span>*/}
-               {/* <button
-                    className="btn-remove"
-                    onClick={removeTask}>X
-                </button>*/}
+
                 <IconButton onClick={removeTask}>
                     <Delete />
                 </IconButton>
@@ -57,7 +49,6 @@ function TodoList(props: TodoListPropsType) {
         )
 
     });
-    //() => props.removeTask(task.id)
 
     const removeTodoList = () => {
         props.removeTodoList(props.id)
@@ -66,21 +57,19 @@ function TodoList(props: TodoListPropsType) {
     const changeTodoListTitle = (title: string) => {
         props.changeTodoListTitle(title, props.id)
     }
-    const setAllFilterValue = () => props.changeTodoListFilter("all", props.id);
-    const setActiveFilterValue = () => props.changeTodoListFilter("active", props.id);
-    const setCompleteFilterValue = () => props.changeTodoListFilter("complete", props.id);
+    const setAllFilterValue = useCallback(() => props.changeTodoListFilter("all", props.id), [props.changeTodoListFilter, props.id]);
+    const setActiveFilterValue = useCallback(() => props.changeTodoListFilter("active", props.id), [props. changeTodoListFilter, props.id]);
+    const setCompleteFilterValue = useCallback(() => props.changeTodoListFilter("complete", props.id), [props.changeTodoListFilter, props.id]);
 
-    const addTask = (title: string) => {
+    const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
-    }
+    }, []);
 
     return (
         <div>
             <h3>
                 <EditableSpan title={props.title} changeTitle={changeTodoListTitle} />
-                {/*<button
-                    onClick={removeTodoList}
-                >X</button>*/}
+
                 <IconButton onClick={removeTodoList}>
                     <Delete />
                 </IconButton>
@@ -94,7 +83,6 @@ function TodoList(props: TodoListPropsType) {
                     size={"small"}
                     color={"primary"}
                     variant={props.todoListFilter === "all" ? "outlined" : "contained"}
-                    // className={props.todoListFilter === "all" ? "active-filter" : ""}
                     onClick={setAllFilterValue}
                 >All
                 </Button>
@@ -103,7 +91,6 @@ function TodoList(props: TodoListPropsType) {
                     size={"small"}
                     color={"primary"}
                     variant={props.todoListFilter === "active" ? "outlined" : "contained"}
-                    // className={props.todoListFilter === "all" ? "active-filter" : ""}
                     onClick={setActiveFilterValue}
                 >Active
                 </Button>
@@ -112,7 +99,6 @@ function TodoList(props: TodoListPropsType) {
                     size={"small"}
                     color={"primary"}
                     variant={props.todoListFilter === "complete" ? "outlined" : "contained"}
-                    // className={props.todoListFilter === "all" ? "active-filter" : ""}
                     onClick={setCompleteFilterValue}
                 >Complete
                 </Button>
@@ -121,7 +107,7 @@ function TodoList(props: TodoListPropsType) {
         </div>
 
     );
-}
+});
 
 export default TodoList;
 
