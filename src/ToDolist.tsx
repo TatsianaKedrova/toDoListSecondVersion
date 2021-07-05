@@ -72,7 +72,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                 }
             </div>
 
-            <div>
+            <div style={{ paddingTop: "10px"}}>
                 <Button
                     size={"small"}
                     color={"primary"}
