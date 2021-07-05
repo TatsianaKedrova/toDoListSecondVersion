@@ -175,5 +175,4 @@ function App() {
 
 export default App;
 
-console.log("I love");
 
