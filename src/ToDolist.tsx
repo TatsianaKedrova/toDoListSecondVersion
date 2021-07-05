@@ -1,9 +1,10 @@
-import {FilterValuesType, TaskType,} from './App';
 import React, {ChangeEvent, useCallback} from "react";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {TaskType} from "./state/tasks-reducer";
+import {FilterValuesType} from "./AppWithRedux";
 
 
 // 
