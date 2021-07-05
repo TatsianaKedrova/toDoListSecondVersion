@@ -51,20 +51,21 @@ const TodoList = React.memo((props: TodoListPropsType) => {
 
     });
 
+    const addTask = useCallback((title: string) => {
+        props.addTask(title, props.id);
+    }, [props.addTask, props.id]);
+
     const removeTodoList = () => {
         props.removeTodoList(props.id)
     }
 
-    const changeTodoListTitle = (title: string) => {
+    const changeTodoListTitle = useCallback((title: string) => {
         props.changeTodoListTitle(title, props.id)
-    }
+    }, [props.changeTodoListTitle, props.id]);
     const setAllFilterValue = useCallback(() => props.changeTodoListFilter("all", props.id), [props.changeTodoListFilter, props.id]);
     const setActiveFilterValue = useCallback(() => props.changeTodoListFilter("active", props.id), [props. changeTodoListFilter, props.id]);
     const setCompleteFilterValue = useCallback(() => props.changeTodoListFilter("complete", props.id), [props.changeTodoListFilter, props.id]);
 
-    const addTask = useCallback((title: string) => {
-        props.addTask(title, props.id);
-    }, []);
 
     return (
         <div>

@@ -32,7 +32,7 @@ export type TodoListType = {
 function AppWithRedux() {
     console.log("AppWithRedux is called");
 
-    const todolists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists);
+    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists);
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useDispatch();
 
@@ -58,22 +58,22 @@ function AppWithRedux() {
     const removeTodoList = useCallback((todoListID: string) => {
         const action = RemoveTodoListAC(todoListID);
         dispatch(action);
-    }, []);
+    }, [dispatch]);
 
     const addTodoList = useCallback((title: string) => {
         const action = AddTodoListAC(title);
         dispatch(action);
-    }, []);
+    }, [dispatch]);
 
     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
         const action = ChangeTodoListTitleAC(title, todoListID);
         dispatch(action);
-    }, []);
+    }, [dispatch]);
 
     const changeTodoListFilter = useCallback((newFilterValue: FilterValuesType, todoListID: string) => {
         const action = ChangeTodoListFilterAC(newFilterValue, todoListID);
         dispatch(action);
-    }, []);
+    }, [dispatch]);
 
     function getTasksForTodoList(todoList: TodoListType) {
         switch (todoList.filter) {
@@ -86,9 +86,9 @@ function AppWithRedux() {
         }
     }
 
-    const todoListComponents = todolists.map(tl => {
+    const todoListComponents = todoLists.map(tl => {
         let newArr = getTasksForTodoList(tl)
-        console.log(newArr)
+        // console.log(newArr)
 
         return (
             <Grid item={true} key={tl.id}>
