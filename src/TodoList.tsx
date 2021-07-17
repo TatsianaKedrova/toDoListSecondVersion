@@ -3,9 +3,9 @@ import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {TaskType} from "./state/tasks-reducer";
-import {FilterValuesType} from "./AppWithRedux";
 import {Task} from "./Task";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./state/todolist-reducer";
 
 
 // 
@@ -18,7 +18,7 @@ type TodoListPropsType = {
     removeTask: (taskID: string, todoListID: string) => void,
     removeTodoList: (todoListID: string) => void,
     changeTodoListFilter: (newFilterValue: FilterValuesType, todoListID: string) => void,
-    changeTaskStatus: (taskID: string, newIsDone: boolean, todoListID: string) => void,
+    changeTaskStatus: (taskID: string, newStatus: TaskStatuses, todoListID: string) => void,
     changeTaskTitle: (taskID: string, title: string, todoListID: string) => void,
     changeTodoListTitle: (title: string, todoListID: string) => void
 }
@@ -29,7 +29,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
 
 
     const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id), [props.removeTask, props.id]);
-    const changeTaskStatus = useCallback((taskId: string, newIsDoneValue: boolean) => props.changeTaskStatus(taskId, newIsDoneValue, props.id), [props.changeTaskStatus, props.id]);
+    const changeTaskStatus = useCallback((taskId: string, newStatusValue: TaskStatuses) => props.changeTaskStatus(taskId, newStatusValue, props.id), [props.changeTaskStatus, props.id]);
     const changeTaskTitle = useCallback((title: string, taskID: string) => {
         props.changeTaskTitle(taskID, title, props.id)
     }, [props.changeTaskTitle, props.id]);

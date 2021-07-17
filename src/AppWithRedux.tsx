@@ -1,38 +1,26 @@
 import React, {useCallback} from "react";
 import './App.css';
-import TodoList from "./ToDolist";
+import TodoList from "./TodoList";
 import AddItemForm from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {
-    AddTaskAC,
-    ChangeTaskStatusAC,
-    ChangeTaskTitleAC,
-    RemoveTaskAC,
-    TasksStateType
-} from "./state/tasks-reducer";
+import {AddTaskAC, ChangeTaskStatusAC, ChangeTaskTitleAC, RemoveTaskAC, TasksStateType} from "./state/tasks-reducer";
 import {
     AddTodoListAC,
     ChangeTodoListFilterAC,
     ChangeTodoListTitleAC,
+    FilterValuesType,
     RemoveTodoListAC,
+    TodolistDomainType,
 } from "./state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
+import {TaskStatuses} from "./api/todolist-api";
 
-
-export type FilterValuesType = "all" | "active" | "complete";
-
-export type TodoListType = {
-    id: string,
-    title: string,
-    filter: FilterValuesType,
-}
 
 function AppWithRedux() {
-    console.log("AppWithRedux is called");
 
-    const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists);
+    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useDispatch();
 
@@ -46,8 +34,8 @@ function AppWithRedux() {
         dispatch(action);
     }, [dispatch]);
 
-    const changeTaskStatus = useCallback((taskID: string, newIsDone: boolean, todoListID: string) => {
-        const action = ChangeTaskStatusAC(taskID, newIsDone, todoListID);
+    const changeTaskStatus = useCallback((taskID: string, newStatus: TaskStatuses, todoListID: string) => {
+        const action = ChangeTaskStatusAC(taskID, newStatus, todoListID);
         dispatch(action);
     }, [dispatch]);
 
@@ -75,12 +63,12 @@ function AppWithRedux() {
         dispatch(action);
     }, [dispatch]);
 
-    function getTasksForTodoList(todoList: TodoListType) {
+    function getTasksForTodoList(todoList: TodolistDomainType) {
         switch (todoList.filter) {
             case 'active':
-                return tasks[todoList.id].filter(task => !task.isDone)
+                return tasks[todoList.id].filter(task => task.status === TaskStatuses.New)
             case 'complete':
-                return tasks[todoList.id].filter(task => task.isDone)
+                return tasks[todoList.id].filter(task => task.status === TaskStatuses.Completed)
             default:
                 return tasks[todoList.id]
         }
