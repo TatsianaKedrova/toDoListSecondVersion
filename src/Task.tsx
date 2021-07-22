@@ -23,7 +23,7 @@ export const Task = React.memo((
     const onClickHandler = () => removeTask(task.id)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newStatusValue = e.currentTarget.checked;
-        changeTaskStatus(task.id, newStatusValue);
+        changeTaskStatus(task.id, newStatusValue ? TaskStatuses.Completed : TaskStatuses.New);
     }
     const onTitleChangeHandler = useCallback((newValue: string) => {
         changeTaskTitle(task.id, newValue);

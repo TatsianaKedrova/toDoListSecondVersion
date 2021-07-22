@@ -74,6 +74,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
 
             <div style={{ paddingTop: "10px"}}>
                 <Button
+                    style={{marginRight: "5px"}}
                     size={"small"}
                     color={"primary"}
                     variant={props.todoListFilter === "all" ? "outlined" : "contained"}
