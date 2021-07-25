@@ -9,10 +9,12 @@ const instance = axios.create({
 });
 export type TodolistType = {
     id: string
-    addedDate: Date
+    addedDate: number
     order: number
     title: string
 }
+
+
 
 export type CommonResponseType<D = {}> = {
     resultCode: number

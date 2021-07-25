@@ -43,7 +43,7 @@ export const todolistReducer = (todoLists: Array<TodolistDomainType> = initialSt
             let copyState = [...todoLists];
             const newTodoList: TodolistDomainType = {
                 id: action.todoListId,
-                addedDate: new Date(),
+                addedDate: new Date().getDate(),
                 order: Number(new Date()),
                 title: action.titleTL,
                 filter: "all"

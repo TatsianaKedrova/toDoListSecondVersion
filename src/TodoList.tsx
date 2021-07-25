@@ -25,8 +25,6 @@ type TodoListPropsType = {
 
 
 const TodoList = React.memo((props: TodoListPropsType) => {
-    console.log("Todolist called");
-
 
     const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id), [props.removeTask, props.id]);
     const changeTaskStatus = useCallback((taskId: string, newStatusValue: TaskStatuses) => props.changeTaskStatus(taskId, newStatusValue, props.id), [props.changeTaskStatus, props.id]);
