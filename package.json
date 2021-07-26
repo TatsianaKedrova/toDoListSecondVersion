@@ -2,7 +2,7 @@
   "name": "it-incubator-todolist-ts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://TatsianaKedrova.github.io/it-kamasutra-todolist-master",
+  "homepage": "https://TatsianaKedrova.github.io/todolist-it-incubator",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",

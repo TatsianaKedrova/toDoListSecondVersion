@@ -79,6 +79,7 @@ function AppWithRedux() {
         // console.log(newArr)
 
         return (
+
             <Grid item={true} key={tl.id}>
                 <Paper elevation={6} style={{padding: "20px"}}>
                     <TodoList
@@ -102,6 +103,7 @@ function AppWithRedux() {
 
     return (
         <div className="App">
+            Hello Tatiana
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge="start" color="inherit" aria-label="menu">
