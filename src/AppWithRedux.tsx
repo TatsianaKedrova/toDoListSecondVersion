@@ -8,14 +8,14 @@ import {AddTaskAC, ChangeTaskStatusAC, ChangeTaskTitleAC, RemoveTaskAC, TasksSta
 import {
     AddTodoListAC,
     ChangeTodoListFilterAC,
-    ChangeTodoListTitleAC,
+    ChangeTodoListTitleAC, fetchTodoListsTC,
     FilterValuesType,
-    RemoveTodoListAC, SetTodoListsAC,
+    RemoveTodoListAC,
     TodolistDomainType,
 } from "./state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TaskStatuses, todoApi} from "./api/todolist-api";
+import {TaskStatuses} from "./api/todolist-api";
 
 
 function AppWithRedux() {
@@ -25,12 +25,7 @@ function AppWithRedux() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        todoApi.getTodos()
-            .then(res => {
-                const action = SetTodoListsAC(res.data);
-                dispatch(action);
-            })
-
+        dispatch(fetchTodoListsTC());
         }, []);
 
     const removeTask = useCallback((taskID: string, todoListID: string) => {

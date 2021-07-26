@@ -1,5 +1,6 @@
 import {v1} from "uuid";
-import {TodolistType} from "../api/todolist-api";
+import {todoApi, TodolistType} from "../api/todolist-api";
+import {Dispatch} from "redux";
 
 export type FilterValuesType = "all" | "active" | "complete";
 export type TodolistDomainType = TodolistType & {
@@ -45,9 +46,28 @@ export const todolistReducer = (todoLists: Array<TodolistDomainType> = initialSt
 //action creators
 export const RemoveTodoListAC = (todoListID: string) => ({type: "REMOVE-TODOLIST", todoListID} as const);
 export const AddTodoListAC = (titleTL: string) => ({type: "ADD-TODOLIST", titleTL, todoListId: v1()} as const);
-export const ChangeTodoListTitleAC = (titleTL: string, todoListId: string) => ({type: "CHANGE-TODOLIST-TITLE", titleTL, todoListId} as const);
-export const ChangeTodoListFilterAC = (newFilterValue: FilterValuesType, todoListId: string) => ({type: "CHANGE-TODOLIST-FILTER", newFilterValue, todoListId} as const);
+export const ChangeTodoListTitleAC = (titleTL: string, todoListId: string) => ({
+    type: "CHANGE-TODOLIST-TITLE",
+    titleTL,
+    todoListId
+} as const);
+export const ChangeTodoListFilterAC = (newFilterValue: FilterValuesType, todoListId: string) => ({
+    type: "CHANGE-TODOLIST-FILTER",
+    newFilterValue,
+    todoListId
+} as const);
 export const SetTodoListsAC = (todoLists: Array<TodolistType>) => ({type: "SET_TODOLISTS", todoLists} as const);
+
+//thunk
+export const fetchTodoListsTC = () => {
+
+    return (dispatch: Dispatch) => {
+        todoApi.getTodos()
+            .then(res => {
+                dispatch(SetTodoListsAC(res.data))
+            })
+    }
+}
 
 
 //action types
@@ -57,7 +77,12 @@ export type ChangeTodoListTitleType = ReturnType<typeof ChangeTodoListTitleAC>;
 export type ChangeTodoListFilterType = ReturnType<typeof ChangeTodoListFilterAC>;
 export type SetTodoListsType = ReturnType<typeof SetTodoListsAC>;
 
-export type ActionType = RemoveTodolistType | AddTodoListType | ChangeTodoListTitleType | ChangeTodoListFilterType | SetTodoListsType;
+export type ActionType =
+    RemoveTodolistType
+    | AddTodoListType
+    | ChangeTodoListTitleType
+    | ChangeTodoListFilterType
+    | SetTodoListsType;
 
 
 
