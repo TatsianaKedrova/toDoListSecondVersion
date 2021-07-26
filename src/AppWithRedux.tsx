@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import './App.css';
 import TodoList from "./TodoList";
 import AddItemForm from "./AddItemForm";
@@ -10,12 +10,12 @@ import {
     ChangeTodoListFilterAC,
     ChangeTodoListTitleAC,
     FilterValuesType,
-    RemoveTodoListAC,
+    RemoveTodoListAC, SetTodoListsAC,
     TodolistDomainType,
 } from "./state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TaskStatuses} from "./api/todolist-api";
+import {TaskStatuses, todoApi} from "./api/todolist-api";
 
 
 function AppWithRedux() {
@@ -23,6 +23,15 @@ function AppWithRedux() {
     const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        todoApi.getTodos()
+            .then(res => {
+                const action = SetTodoListsAC(res.data);
+                dispatch(action);
+            })
+
+        }, []);
 
     const removeTask = useCallback((taskID: string, todoListID: string) => {
         const action = RemoveTaskAC(taskID, todoListID);
@@ -103,7 +112,6 @@ function AppWithRedux() {
 
     return (
         <div className="App">
-            Hello Tatiana
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge="start" color="inherit" aria-label="menu">
