@@ -4,7 +4,14 @@ import TodoList from "./TodoList";
 import AddItemForm from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {AddTaskAC, ChangeTaskStatusAC, ChangeTaskTitleAC, RemoveTaskAC, TasksStateType} from "./state/tasks-reducer";
+import {
+
+    addTaskTC,
+    ChangeTaskStatusAC,
+    ChangeTaskTitleAC,
+    removeTaskTC,
+    TasksStateType
+} from "./state/tasks-reducer";
 import {
     AddTodoListAC,
     ChangeTodoListFilterAC,
@@ -29,13 +36,16 @@ function AppWithRedux() {
         }, []);
 
     const removeTask = useCallback((taskID: string, todoListID: string) => {
-        const action = RemoveTaskAC(taskID, todoListID);
-        dispatch(action);
+
+        const thunk = removeTaskTC(todoListID, taskID);
+        dispatch(thunk);
+        /*const action = RemoveTaskAC(taskID, todoListID);
+        dispatch(action);*/
     }, [dispatch]);
 
     const addTask = useCallback((title: string, todoListId: string) => {
-        const action = AddTaskAC(title, todoListId);
-        dispatch(action);
+        // const action = AddTaskAC(title, todoListId);
+        dispatch(addTaskTC(todoListId, title));
     }, [dispatch]);
 
     const changeTaskStatus = useCallback((taskID: string, newStatus: TaskStatuses, todoListID: string) => {

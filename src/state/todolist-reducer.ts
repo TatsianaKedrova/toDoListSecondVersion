@@ -61,7 +61,7 @@ export const SetTodoListsAC = (todoLists: Array<TodolistType>) => ({type: "SET_T
 //thunk
 export const fetchTodoListsTC = () => {
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<ActionType>) => {
         todoApi.getTodos()
             .then(res => {
                 dispatch(SetTodoListsAC(res.data))
@@ -69,6 +69,14 @@ export const fetchTodoListsTC = () => {
     }
 }
 
+export const removeTodoListTC = (todoListId: string) => {
+    return (dispatch: Dispatch) => {
+        todoApi.deleteTodo(todoListId)
+            .then(res => {
+                dispatch(RemoveTodoListAC(todoListId))
+            })
+    }
+}
 
 //action types
 export type RemoveTodolistType = ReturnType<typeof RemoveTodoListAC>;
