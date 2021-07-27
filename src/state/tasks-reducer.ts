@@ -1,6 +1,5 @@
-import {v1} from "uuid";
 import {AddTodoListType, RemoveTodolistType, SetTodoListsType} from "./todolist-reducer";
-import {TaskPriorities, TaskStatuses, TaskType, todoApi} from "../api/todolist-api";
+import {TaskStatuses, TaskType, todoApi} from "../api/todolist-api";
 import {Dispatch} from "redux";
 
 //types
@@ -14,13 +13,13 @@ const initState: TasksStateType = {};
 export const tasksReducer = (state: TasksStateType = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case "ADD-TASK":
-
-            let newTask: TaskType = {description: `newTask number ${action.task.todoListId}`, title: action.task.title, completed: false, status:TaskStatuses.New, priority: TaskPriorities.Middle, startDate: `${new Date()}`, deadline:`${new Date().getDate() + 10}`, id: v1(), todoListId: action.task.todoListId, order: 1, addedDate: `${new Date()}`};
+            console.log(action)
+            let newTask = action.task;
             const copyState = {...state};
-            const updatedTasks = [newTask, ...copyState[action.task.todoListId]];
+            const updatedTasks = [newTask, ...copyState[newTask.todoListId]];
             return {
                 ...copyState,
-                [action.task.todoListId]: updatedTasks
+                [newTask.todoListId]: updatedTasks
             }
         case "REMOVE-TASK": {
             let copyState = {...state};
@@ -84,10 +83,10 @@ export const fetchTasksTC = (todoListId: string) => {
 }
 
 export const addTaskTC = (todoListId: string, taskTitle: string) => {
-
     return (dispatch: Dispatch<ActionType>) => {
         todoApi.createTask(todoListId, taskTitle)
             .then( res => {
+                console.log(res.data)
                 dispatch(AddTaskAC(res.data.data.item))
             })
     }
@@ -95,7 +94,7 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
 
 export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: Dispatch<ActionType>) => {
         todoApi.deleteTask(todoListId, taskId)
-            .then( res => {
+            .then( () => {
                 dispatch(RemoveTaskAC(taskId,todoListId))
             })
 

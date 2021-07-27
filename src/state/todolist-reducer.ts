@@ -72,10 +72,18 @@ export const fetchTodoListsTC = () => {
 export const removeTodoListTC = (todoListId: string) => {
     return (dispatch: Dispatch) => {
         todoApi.deleteTodo(todoListId)
-            .then(res => {
+            .then( () => {
                 dispatch(RemoveTodoListAC(todoListId))
             })
     }
+}
+
+export const addTodoListTC = (title: string) => (dispatch: Dispatch<ActionType>) => {
+    todoApi.createTodo(title)
+        .then( res => {
+            dispatch(AddTodoListAC(res.data.data.item.title))
+            // dispatch(AddTaskAC())
+        })
 }
 
 //action types
