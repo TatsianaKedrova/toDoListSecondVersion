@@ -60,7 +60,6 @@ function AppWithRedux() {
     }, [dispatch]);
 
     const addTodoList = useCallback((title: string) => {
-        // const action = AddTodoListAC(title);
         const thunk = addTodoListTC(title);
         dispatch(thunk);
     }, [dispatch]);

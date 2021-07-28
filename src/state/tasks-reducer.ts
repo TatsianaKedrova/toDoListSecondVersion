@@ -44,7 +44,7 @@ export const tasksReducer = (state: TasksStateType = initState, action: ActionTy
         }
 
         case 'ADD-TODOLIST':
-            return {...state, [action.todoListId]: []}
+            return {...state, [action.todolist.id]: []}
         case "REMOVE-TODOLIST": {
             let copyState = {...state};
             delete copyState[action.todoListID]
@@ -75,7 +75,7 @@ export const SetTaskAC = (tasks: Array<TaskType>, todoListId: string) => ({type:
 //thunk
 export const fetchTasksTC = (todoListId: string) => {
     return (dispatch: Dispatch<ActionType>) => {
-        todoApi.getTasks(todoListId)
+        todoApi.fetchTasks(todoListId)
             .then(res => {
                 dispatch(SetTaskAC(res.data.items, todoListId))
             })
@@ -84,7 +84,7 @@ export const fetchTasksTC = (todoListId: string) => {
 
 export const addTaskTC = (todoListId: string, taskTitle: string) => {
     return (dispatch: Dispatch<ActionType>) => {
-        todoApi.createTask(todoListId, taskTitle)
+        todoApi.addTask(todoListId, taskTitle)
             .then( res => {
                 console.log(res.data)
                 dispatch(AddTaskAC(res.data.data.item))
@@ -93,7 +93,7 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
 }
 
 export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: Dispatch<ActionType>) => {
-        todoApi.deleteTask(todoListId, taskId)
+        todoApi.removeTask(todoListId, taskId)
             .then( () => {
                 dispatch(RemoveTaskAC(taskId,todoListId))
             })

@@ -68,26 +68,26 @@ export type UpdateTaskModelType = {
 
 export const todoApi = {
     //methods on todoLists
-    getTodos() {
+    fetchTodoLists() {
         return instance.get<TodolistType[]>('todo-lists')
     },
-    createTodo(title: string) {
+    addTodo(title: string) {
         return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title})
     },
-    deleteTodo(todolistId: string) {
+    removeTodo(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
     updateTodoTitle(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
     },
     //methods on tasks
-    getTasks(todolistId: string) {
+    fetchTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
     },
-    deleteTask(todoListId: string, taskId: string) {
+    removeTask(todoListId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`)
     },
-    createTask(todoListId: string, taskTitle: string) {
+    addTask(todoListId: string, taskTitle: string) {
         return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`,{title:taskTitle} )
     },
     updateTask(todoListId: string, taskId: string, model: UpdateTaskModelType) {

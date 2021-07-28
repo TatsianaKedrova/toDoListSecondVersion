@@ -40,13 +40,7 @@ const EditableSpan = React.memo((props: EditableSpanPropsType) => {
                 onChange={changeTitle}
                 onKeyPress={onKeyPressAddTask}
             />
-            /*<input
-                value={title}
-                onChange={changeTitle}
-                onKeyPress={onKeyPressAddTask}
-                onBlur={offEditMode}
 
-            />*/
             : <span onDoubleClick={onEditMode}>{props.title}</span>
     )
 });

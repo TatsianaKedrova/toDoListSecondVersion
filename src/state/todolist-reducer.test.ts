@@ -7,20 +7,25 @@ import {
 } from './todolist-reducer';
 import {v1} from 'uuid';
 import {tasksReducer, TasksStateType} from "./tasks-reducer";
+import {TodolistType} from "../api/todolist-api";
 
 let todolistId1: string;
 let todolistId2: string;
 let startState: Array<TodolistDomainType> = [];
+let newToDoList: TodolistType;
 
 beforeEach(() => {
+
     todolistId1 = v1();
     todolistId2 = v1();
     startState = [
         {id: todolistId1, title: "What to learn", addedDate: new Date().getDate(), order: Math.random(), filter: "all"},
         {id: todolistId2, title: "What to buy", addedDate: new Date().getDate(), order: Math.random(), filter: "all"}
     ]
-})
 
+    newToDoList = {id: todolistId1, title: "Silly", addedDate: new Date().getDate(), order: Math.random()};
+
+})
 
 test('correct todolist should be removed', () => {
 
@@ -31,12 +36,12 @@ test('correct todolist should be removed', () => {
 });
 
 test('correct todolist should be added', () => {
-    let title2 = "StretchingClasses";
+    // let title2 = "StretchingClasses";
 
-    const endState = todolistReducer(startState, AddTodoListAC(title2))
+    const endState = todolistReducer(startState, AddTodoListAC(newToDoList))
 
     expect(endState.length).toBe(3);
-    expect(endState[2].title).toBe(title2);
+    expect(endState[0].title).toBe("Silly");
 });
 
 test("todolist's title should be changed", () => {
@@ -62,7 +67,7 @@ test('ids should be equals', () => {
     const startTasksState: TasksStateType = {};
     const startTodolistsState: Array<TodolistDomainType> = [];
 
-    const action = AddTodoListAC("My nearest future plans");
+    const action = AddTodoListAC(newToDoList);
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistReducer(startTodolistsState, action)
@@ -71,8 +76,8 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodolists = endTodolistsState[0].id;
 
-    expect(idFromTasks).toBe(action.todoListId);
-    expect(idFromTodolists).toBe(action.todoListId);
+    expect(idFromTasks).toBe(action.todolist.id);
+    expect(idFromTodolists).toBe(action.todolist.id);
 });
 
 test('todoLists should appear on the screen after initial rendering', () => {
