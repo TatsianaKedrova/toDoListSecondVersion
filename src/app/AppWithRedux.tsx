@@ -25,7 +25,7 @@ import {
 import {
     addTodoListTC,
     ChangeTodoListFilterAC,
-    ChangeTodoListTitleAC, changeTodolistTitleTC, fetchTodoListsTC,
+    changeTodolistTitleTC, fetchTodoListsTC,
     FilterValuesType, removeTodoListTC,
     TodolistDomainType,
 } from "../state/todolist-reducer";
