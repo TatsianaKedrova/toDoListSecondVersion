@@ -36,7 +36,6 @@ test('correct todolist should be removed', () => {
 });
 
 test('correct todolist should be added', () => {
-    // let title2 = "StretchingClasses";
 
     const endState = todolistReducer(startState, AddTodoListAC(newToDoList))
 
@@ -44,7 +43,7 @@ test('correct todolist should be added', () => {
     expect(endState[0].title).toBe("Silly");
 });
 
-test("todolist's title should be changed", () => {
+test("todoList's title should be changed", () => {
     let title1 = "DanceStyles";
 
     const endState = todolistReducer(startState, ChangeTodoListTitleAC(title1, todolistId1))
@@ -53,7 +52,7 @@ test("todolist's title should be changed", () => {
     expect(endState[0].title).toBe(title1);
 });
 
-test("todolist's filter should be changed", () => {
+test("todoList's filter should be changed", () => {
     let newFilterValue: FilterValuesType = "active";
 
     const endState = todolistReducer(startState, ChangeTodoListFilterAC(newFilterValue, todolistId1))

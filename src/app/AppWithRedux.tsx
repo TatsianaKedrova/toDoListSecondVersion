@@ -1,8 +1,19 @@
 import React, {useCallback, useEffect} from "react";
 import './App.css';
-import TodoList from "./TodoList";
-import AddItemForm from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import TodoList from "../components/TodoList/TodoList";
+import AddItemForm from "../components/AddItemForm/AddItemForm";
+
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
+import LinearProgress from '@material-ui/core/LinearProgress';
 import {Menu} from "@material-ui/icons";
 import {
 
@@ -10,17 +21,18 @@ import {
     updateTaskTC,
     removeTaskTC,
     TasksStateType
-} from "./state/tasks-reducer";
+} from "../state/tasks-reducer";
 import {
     addTodoListTC,
     ChangeTodoListFilterAC,
     ChangeTodoListTitleAC, changeTodolistTitleTC, fetchTodoListsTC,
     FilterValuesType, removeTodoListTC,
     TodolistDomainType,
-} from "./state/todolist-reducer";
+} from "../state/todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {TaskStatuses} from "./api/todolist-api";
+import {AppRootStateType} from "../state/store";
+import {TaskStatuses} from "../api/todolist-api";
+import ErrorSnackbar from "../components/ErrorSnackBar/ErrorSnackBar";
 
 
 function AppWithRedux() {
@@ -121,6 +133,9 @@ function AppWithRedux() {
 
     return (
         <div className="App">
+
+            <ErrorSnackbar />
+
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -131,6 +146,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                <LinearProgress />
             </AppBar>
             <Container fixed>
                 <Grid container={true} style={{padding: "20px 0px"}}>
