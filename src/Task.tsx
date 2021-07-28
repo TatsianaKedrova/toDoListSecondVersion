@@ -27,7 +27,6 @@ export const Task = React.memo((
         changeTaskStatus(task.id, newStatusValue ? TaskStatuses.Completed : TaskStatuses.New);
     }
     const onTitleChangeHandler = useCallback((newValue: string) => {
-        debugger
         changeTaskTitle(newValue, task.id);
     }, [changeTaskTitle, task.id])
     return(

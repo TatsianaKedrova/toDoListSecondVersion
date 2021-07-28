@@ -1,6 +1,6 @@
 import {
     AddTaskAC,
-    ChangeTaskStatusAC,
+    UpdateTaskAC,
     ChangeTaskTitleAC,
     RemoveTaskAC,
     SetTaskAC,
@@ -215,7 +215,7 @@ test('correct task should be added to correct array', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = ChangeTaskStatusAC("2", TaskStatuses.Completed, "todolistId2");
+    const action = UpdateTaskAC("2", TaskStatuses.Completed, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 

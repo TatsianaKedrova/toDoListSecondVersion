@@ -7,15 +7,14 @@ import {Menu} from "@material-ui/icons";
 import {
 
     addTaskTC,
-    ChangeTaskStatusAC,
-    ChangeTaskTitleAC,
+    updateTaskTC,
     removeTaskTC,
     TasksStateType
 } from "./state/tasks-reducer";
 import {
     addTodoListTC,
     ChangeTodoListFilterAC,
-    ChangeTodoListTitleAC, fetchTodoListsTC,
+    ChangeTodoListTitleAC, changeTodolistTitleTC, fetchTodoListsTC,
     FilterValuesType, removeTodoListTC,
     TodolistDomainType,
 } from "./state/todolist-reducer";
@@ -26,7 +25,7 @@ import {TaskStatuses} from "./api/todolist-api";
 
 function AppWithRedux() {
 
-    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
+    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todoLists);
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useDispatch();
 
@@ -45,12 +44,19 @@ function AppWithRedux() {
     }, [dispatch]);
 
     const changeTaskStatus = useCallback((taskID: string, newStatus: TaskStatuses, todoListID: string) => {
-        const action = ChangeTaskStatusAC(taskID, newStatus, todoListID);
-        dispatch(action);
+
+        const thunk = updateTaskTC(taskID,{status: newStatus},todoListID);
+        dispatch(thunk);
+
+        /*const action = ChangeTaskStatusAC(taskID, newStatus, todoListID);
+        dispatch(action);*/
     }, [dispatch]);
 
     const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        dispatch(ChangeTaskTitleAC(taskID, title, todoListID));
+        const thunk = updateTaskTC(taskID, {title},todoListID);
+        dispatch(thunk);
+
+        // dispatch(ChangeTaskTitleAC(taskID, title, todoListID));
     }, [dispatch]);
 
     const removeTodoList = useCallback((todoListID: string) => {
@@ -65,8 +71,9 @@ function AppWithRedux() {
     }, [dispatch]);
 
     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        const action = ChangeTodoListTitleAC(title, todoListID);
-        dispatch(action);
+        // const action = ChangeTodoListTitleAC(title, todoListID);
+        const thunk = changeTodolistTitleTC(todoListID, title);
+        dispatch(thunk);
     }, [dispatch]);
 
     const changeTodoListFilter = useCallback((newFilterValue: FilterValuesType, todoListID: string) => {

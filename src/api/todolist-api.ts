@@ -63,7 +63,6 @@ export type UpdateTaskModelType = {
     priority: TaskPriorities
     startDate: string
     deadline: string
-
 }
 
 export const todoApi = {
@@ -77,7 +76,7 @@ export const todoApi = {
     removeTodo(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
-    updateTodoTitle(todolistId: string, title: string) {
+    changeTodoTitle(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
     },
     //methods on tasks
@@ -90,7 +89,7 @@ export const todoApi = {
     addTask(todoListId: string, taskTitle: string) {
         return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`,{title:taskTitle} )
     },
-    updateTask(todoListId: string, taskId: string, model: UpdateTaskModelType) {
+    changeTask(todoListId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
     }
 }

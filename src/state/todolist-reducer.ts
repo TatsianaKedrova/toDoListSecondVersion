@@ -80,8 +80,14 @@ export const removeTodoListTC = (todoListId: string) => {
 export const addTodoListTC = (title: string) => (dispatch: Dispatch<ActionType>) => {
     todoApi.addTodo(title)
         .then( res => {
-            console.log(res.data.data.item)
             dispatch(AddTodoListAC(res.data.data.item))
+        })
+}
+
+export const changeTodolistTitleTC = (todoListId: string, title: string) => (dispatch: Dispatch<ActionType>) => {
+    todoApi.changeTodoTitle(todoListId, title)
+        .then( () => {
+            dispatch(ChangeTodoListTitleAC(title, todoListId))
         })
 }
 
