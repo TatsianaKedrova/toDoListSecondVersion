@@ -1,7 +1,6 @@
 import {
     AddTaskAC,
     UpdateTaskAC,
-    ChangeTaskTitleAC,
     RemoveTaskAC,
     SetTaskAC,
     tasksReducer,
@@ -215,7 +214,7 @@ test('correct task should be added to correct array', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = UpdateTaskAC("2", TaskStatuses.Completed, "todolistId2");
+    const action = UpdateTaskAC("2", {status: TaskStatuses.Completed}, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -225,7 +224,7 @@ test('status of specified task should be changed', () => {
 
 test('title of specified task should be changed', () => {
 
-    const action = ChangeTaskTitleAC("2", "Taniusha", "todolistId2");
+    const action = UpdateTaskAC("2", {title: "Taniusha"}, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -235,7 +234,14 @@ test('title of specified task should be changed', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-    const action = AddTodoListAC("My husband Sherif");
+    let todo = {
+        id: "todolistId3",
+        addedDate: 28,
+        order: 1,
+        title: "Todo1"
+    }
+
+    const action = AddTodoListAC(todo);
 
     const endState = tasksReducer(startState, action)
 
