@@ -119,6 +119,7 @@ function AppWithRedux() {
                         id={tl.id}
                         title={tl.title}
                         todoListFilter={tl.filter}
+                        todoListStatus={tl.todolistStatus}
                         tasks={newArr}
                         addTask={addTask}
                         removeTask={removeTask}
@@ -148,11 +149,11 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                {status === "loading" && <LinearProgress />}
+                {status === "loading" && <LinearProgress color={"secondary"}/>}
             </AppBar>
             <Container fixed>
                 <Grid container={true} style={{padding: "20px 0px"}}>
-                    <AddItemForm addItem={addTodoList}/>
+                    <AddItemForm addItem={addTodoList} />
                 </Grid>
                 <Grid container={true} spacing={5}>
                     {todoListComponents}

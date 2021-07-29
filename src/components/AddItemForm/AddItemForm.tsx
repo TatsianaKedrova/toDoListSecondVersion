@@ -4,6 +4,7 @@ import {AddBox} from "@material-ui/icons";
 
 export type AddItemPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemPropsType) => {
@@ -45,6 +46,7 @@ export const AddItemForm = React.memo((props: AddItemPropsType) => {
                 error={!!error}
                 label={"Title"}
                 helperText={error}
+                disabled={props.disabled}
             />
             <IconButton onClick={addItemHandler} color={"primary"}>
                 <AddBox  />

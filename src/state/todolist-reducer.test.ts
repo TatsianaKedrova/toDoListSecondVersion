@@ -1,6 +1,6 @@
 import {
     AddTodoListAC,
-    ChangeTodoListFilterAC,
+    ChangeTodoListFilterAC, ChangeTodolistStatusAC,
     ChangeTodoListTitleAC, FilterValuesType,
     RemoveTodoListAC, SetTodoListsAC, TodolistDomainType,
     todolistReducer
@@ -8,6 +8,7 @@ import {
 import {v1} from 'uuid';
 import {tasksReducer, TasksStateType} from "./tasks-reducer";
 import {TodolistType} from "../api/todolist-api";
+import {RequestStatusType} from "../app/app-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -19,8 +20,22 @@ beforeEach(() => {
     todolistId1 = v1();
     todolistId2 = v1();
     startState = [
-        {id: todolistId1, title: "What to learn", addedDate: new Date().getDate(), order: Math.random(), filter: "all"},
-        {id: todolistId2, title: "What to buy", addedDate: new Date().getDate(), order: Math.random(), filter: "all"}
+        {
+            id: todolistId1,
+            title: "What to learn",
+            addedDate: new Date().getDate(),
+            order: Math.random(),
+            filter: "all",
+            todolistStatus: "idle"
+        },
+        {
+            id: todolistId2,
+            title: "What to buy",
+            addedDate: new Date().getDate(),
+            order: Math.random(),
+            filter: "all",
+            todolistStatus: "idle"
+        }
     ]
 
     newToDoList = {id: todolistId1, title: "Silly", addedDate: new Date().getDate(), order: Math.random()};
@@ -60,6 +75,15 @@ test("todoList's filter should be changed", () => {
     expect(endState.length).toBe(2);
     expect(endState[0].filter).toBe(newFilterValue);
     expect(endState[0].filter).toBe("active");
+});
+
+test("todoList's status should be changed", () => {
+    let newStatus: RequestStatusType = "succeeded";
+    const endState = todolistReducer(startState, ChangeTodolistStatusAC(todolistId1, newStatus))
+
+    expect(endState.length).toBe(2);
+    expect(endState[0].todolistStatus).toBe(newStatus);
+    expect(endState[1].todolistStatus).toBe("idle");
 });
 
 test('ids should be equals', () => {

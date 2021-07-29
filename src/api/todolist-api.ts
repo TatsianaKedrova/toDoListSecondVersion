@@ -76,7 +76,7 @@ export const todoApi = {
     removeTodo(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
-    changeTodoTitle(todolistId: string, title: string) {
+    changeTodo(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
     },
     //methods on tasks
