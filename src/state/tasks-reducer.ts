@@ -2,8 +2,8 @@ import {AddTodoListType, RemoveTodolistType, SetTodoListsType} from "./todolist-
 import {TaskPriorities, TaskStatuses, TaskType, todoApi, UpdateTaskModelType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
-import {AppSetStatusType, setAppErrorAC, SetAppErrorType, setAppStatusAC} from "../app/app-reducer";
-import {handleServerAppError} from "../utils/error-utils";
+import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 //types
 export type TasksStateType = {
@@ -73,7 +73,7 @@ export const UpdateTaskAC = (taskID: string, model: UpdateDomainTaskModelType, t
     model,
     todoListId
 } as const);
-// export const ChangeTaskTitleAC = (taskID: string, title: string, todoListId: string) => ({type: "CHANGE-TASK-TITLE", taskID, title, todoListId} as const);
+
 export const SetTaskAC = (tasks: Array<TaskType>, todoListId: string) => ({
     type: "SET-TASK",
     tasks,
@@ -89,6 +89,9 @@ export const fetchTasksTC = (todoListId: string) => {
                 dispatch(SetTaskAC(res.data.items, todoListId))
                 dispatch(setAppStatusAC("succeeded"))
             })
+            .catch( (error) => {
+               handleServerNetworkError(error, dispatch)
+            })
     }
 }
 
@@ -102,17 +105,11 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
                     dispatch(AddTaskAC(res.data.data.item))
                     dispatch(setAppStatusAC("succeeded"))
                 } else {
-                    if (res.data.messages.length) {
-                        dispatch(setAppErrorAC(res.data.messages[0]));
-                    } else {
-                        dispatch(setAppErrorAC("Some error occurred"))
-                    }
-                    dispatch(setAppStatusAC("failed"))
+                    handleServerAppError(res.data, dispatch)
                 }
             })
             .catch( (error) => {
-                dispatch(setAppErrorAC(error.message))
-                dispatch(setAppStatusAC("failed"))
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -125,25 +122,12 @@ export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: D
                 dispatch(RemoveTaskAC(taskId, todoListId))
                 dispatch(setAppStatusAC("succeeded"))
             } else {
-                if(res.data.messages.length) {
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                } else {
-                    dispatch(setAppErrorAC("Some error occurred"));
-                }
-                dispatch(setAppStatusAC("failed"))
+                handleServerAppError(res.data, dispatch)
             }
         })
-}
-
-export type UpdateDomainTaskModelType = {
-    description?: string
-    title?: string
-    completed?: boolean
-    status?: TaskStatuses
-    priority?: TaskPriorities
-    startDate?: string
-    deadline?: string
-
+        .catch( (error) => {
+            handleServerNetworkError(error, dispatch)
+        })
 }
 
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todoListId: string) => (dispatch: DispatchTaskThunkType, getState: () => AppRootStateType) => {
@@ -176,9 +160,7 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
             }
         })
         .catch( (error) => {
-            // handleServerNetworkError();
-            dispatch(setAppStatusAC(error.message));
-            dispatch(setAppStatusAC("failed"))
+            handleServerNetworkError(error, dispatch);
         })
 }
 
@@ -187,6 +169,17 @@ export type AddTaskType = ReturnType<typeof AddTaskAC>;
 export type RemoveTaskType = ReturnType<typeof RemoveTaskAC>;
 export type ChangeTaskStatusType = ReturnType<typeof UpdateTaskAC>;
 export type SetTaskType = ReturnType<typeof SetTaskAC>;
+
+export type UpdateDomainTaskModelType = {
+    description?: string
+    title?: string
+    completed?: boolean
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
+
+}
 
 type ActionType =
     AddTaskType
