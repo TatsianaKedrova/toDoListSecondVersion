@@ -33,12 +33,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
 import {TaskStatuses} from "../api/todolist-api";
 import ErrorSnackbar from "../components/ErrorSnackBar/ErrorSnackBar";
+import {RequestStatusType} from "./app-reducer";
 
 
 function AppWithRedux() {
 
     const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todoLists);
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -146,7 +148,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                <LinearProgress />
+                {status === "loading" && <LinearProgress />}
             </AppBar>
             <Container fixed>
                 <Grid container={true} style={{padding: "20px 0px"}}>

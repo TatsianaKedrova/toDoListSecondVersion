@@ -1,5 +1,6 @@
 import {todoApi, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
+import {AppSetStatusType, setAppErrorAC, SetAppErrorType, setAppStatusAC} from "../app/app-reducer";
 
 export type FilterValuesType = "all" | "active" | "complete";
 export type TodolistDomainType = TodolistType & {
@@ -61,13 +62,14 @@ export const SetTodoListsAC = (todoLists: Array<TodolistType>) => ({type: "SET_T
 //thunk
 export const fetchTodoListsTC = () => {
     return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC("loading"))
         todoApi.fetchTodoLists()
             .then(res => {
                 dispatch(SetTodoListsAC(res.data))
+                dispatch(setAppStatusAC("succeeded"))
             })
     }
 }
-
 export const removeTodoListTC = (todoListId: string) => {
     return (dispatch: Dispatch) => {
         todoApi.removeTodo(todoListId)
@@ -76,14 +78,23 @@ export const removeTodoListTC = (todoListId: string) => {
             })
     }
 }
-
 export const addTodoListTC = (title: string) => (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC("loading"))
     todoApi.addTodo(title)
         .then( res => {
-            dispatch(AddTodoListAC(res.data.data.item))
+            if(res.data.resultCode === 0) {
+                dispatch(AddTodoListAC(res.data.data.item))
+                dispatch(setAppStatusAC("succeeded"))
+            } else {
+                if(res.data.messages.length) {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                } else {
+                    dispatch(setAppErrorAC("Some error occurred!"))
+                }
+                dispatch(setAppStatusAC("failed"))
+            }
         })
 }
-
 export const changeTodolistTitleTC = (todoListId: string, title: string) => (dispatch: Dispatch<ActionType>) => {
     todoApi.changeTodoTitle(todoListId, title)
         .then( () => {
@@ -103,7 +114,9 @@ export type ActionType =
     | AddTodoListType
     | ChangeTodoListTitleType
     | ChangeTodoListFilterType
-    | SetTodoListsType;
+    | SetTodoListsType
+    | AppSetStatusType
+    | SetAppErrorType
 
 
 

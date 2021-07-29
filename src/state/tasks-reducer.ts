@@ -2,6 +2,7 @@ import {AddTodoListType, RemoveTodolistType, SetTodoListsType} from "./todolist-
 import {TaskPriorities, TaskStatuses, TaskType, todoApi, UpdateTaskModelType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
+import {AppSetStatusType, setAppErrorAC, SetAppErrorType, setAppStatusAC} from "../app/app-reducer";
 
 //types
 export type TasksStateType = {
@@ -68,19 +69,33 @@ export const SetTaskAC = (tasks: Array<TaskType>, todoListId: string) => ({type:
 //thunk
 export const fetchTasksTC = (todoListId: string) => {
     return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC("loading"))
         todoApi.fetchTasks(todoListId)
             .then(res => {
                 dispatch(SetTaskAC(res.data.items, todoListId))
+                dispatch(setAppStatusAC("succeeded"))
             })
     }
 }
 
 export const addTaskTC = (todoListId: string, taskTitle: string) => {
     return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC("loading"))
         todoApi.addTask(todoListId, taskTitle)
             .then( res => {
-                console.log(res.data)
-                dispatch(AddTaskAC(res.data.data.item))
+
+                if(res.data.resultCode === 0) {
+                    dispatch(AddTaskAC(res.data.data.item))
+                    dispatch(setAppStatusAC("succeeded"))
+                } else {
+                    if(res.data.messages.length) {
+                        dispatch(setAppErrorAC(res.data.messages[0]));
+                    }
+                    else {
+                        dispatch(setAppErrorAC("Some error occurred"))
+                    }
+                    dispatch(setAppStatusAC("failed"))
+                }
             })
     }
 }
@@ -135,18 +150,18 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
 export type AddTaskType = ReturnType<typeof AddTaskAC>;
 export type RemoveTaskType = ReturnType<typeof RemoveTaskAC>;
 export type ChangeTaskStatusType = ReturnType<typeof UpdateTaskAC>;
-// export type ChangeTaskTitleType = ReturnType<typeof ChangeTaskTitleAC>;
 export type SetTaskType = ReturnType<typeof SetTaskAC>;
 
 type ActionType =
       AddTaskType
     | RemoveTaskType
     | ChangeTaskStatusType
-    // | ChangeTaskTitleType
+    | SetAppErrorType
     | AddTodoListType
     | RemoveTodolistType
     | SetTodoListsType
     | SetTaskType
+    | AppSetStatusType
 
 
 
