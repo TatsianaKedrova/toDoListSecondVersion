@@ -2,7 +2,7 @@ import {AddTodoListType, RemoveTodolistType, SetTodoListsType} from "./todolist-
 import {TaskPriorities, TaskStatuses, TaskType, todoApi, UpdateTaskModelType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
-import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "../app/app-reducer";
+import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 //types

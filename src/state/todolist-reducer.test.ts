@@ -8,7 +8,7 @@ import {
 import {v1} from 'uuid';
 import {tasksReducer, TasksStateType} from "./tasks-reducer";
 import {TodolistType} from "../api/todolist-api";
-import {RequestStatusType} from "../app/app-reducer";
+import {RequestStatusType} from "./app-reducer";
 
 let todolistId1: string;
 let todolistId2: string;

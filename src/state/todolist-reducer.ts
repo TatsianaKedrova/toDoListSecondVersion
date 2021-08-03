@@ -1,6 +1,6 @@
 import {todoApi, TodolistType} from "../api/todolist-api";
 import {Dispatch} from "redux";
-import {AppSetStatusType, RequestStatusType, setAppErrorAC, SetAppErrorType, setAppStatusAC} from "../app/app-reducer";
+import {AppSetStatusType, RequestStatusType, setAppErrorAC, SetAppErrorType, setAppStatusAC} from "./app-reducer";
 
 export type FilterValuesType = "all" | "active" | "complete";
 export type TodolistDomainType = TodolistType & {

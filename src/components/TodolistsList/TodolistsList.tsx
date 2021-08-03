@@ -30,7 +30,6 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) 
         if (demo) {
             return;
         }
-
         dispatch(fetchTodoListsTC());
     }, []);
 

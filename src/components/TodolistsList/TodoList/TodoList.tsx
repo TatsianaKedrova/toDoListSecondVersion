@@ -8,7 +8,7 @@ import {TaskStatuses, TaskType} from "../../../api/todolist-api";
 import {FilterValuesType} from "../../../state/todolist-reducer";
 import {useDispatch} from "react-redux";
 import {fetchTasksTC} from "../../../state/tasks-reducer";
-import {RequestStatusType} from "../../../app/app-reducer";
+import {RequestStatusType} from "../../../state/app-reducer";
 
 
 // 

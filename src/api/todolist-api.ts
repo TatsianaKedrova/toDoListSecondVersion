@@ -65,6 +65,13 @@ export type UpdateTaskModelType = {
     deadline: string
 }
 
+export type LogInType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: string
+}
+
 export const todoApi = {
     //methods on todoLists
     fetchTodoLists() {
@@ -91,6 +98,13 @@ export const todoApi = {
     },
     changeTask(todoListId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+    }
+}
+
+export const loginApi = {
+    //methods on login
+    logIn() {
+        return instance.post("auth/login")
     }
 }
 
