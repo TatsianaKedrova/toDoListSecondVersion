@@ -7,6 +7,42 @@ const instance = axios.create({
         'API-KEY': '3356848e-44a4-478d-85f0-1e1fabb15c46'
     }
 });
+
+export const todoApi = {
+    //methods on todoLists
+    fetchTodoLists() {
+        return instance.get<TodolistType[]>('todo-lists')
+    },
+    addTodo(title: string) {
+        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title})
+    },
+    removeTodo(todolistId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
+    },
+    changeTodo(todolistId: string, title: string) {
+        return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
+    },
+    //methods on tasks
+    fetchTasks(todolistId: string) {
+        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
+    },
+    removeTask(todoListId: string, taskId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`)
+    },
+    addTask(todoListId: string, taskTitle: string) {
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`,{title:taskTitle} )
+    },
+    changeTask(todoListId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+    }
+}
+
+export const authApi = {
+    logIn(loginInfo: LogInType) {
+        return instance.post<ResponseType<{ userId: number }>>("auth/login", loginInfo)
+    }
+}
+
 export type TodolistType = {
     id: string
     addedDate: number
@@ -72,40 +108,5 @@ export type LogInType = {
     captcha?: string
 }
 
-export const todoApi = {
-    //methods on todoLists
-    fetchTodoLists() {
-        return instance.get<TodolistType[]>('todo-lists')
-    },
-    addTodo(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title})
-    },
-    removeTodo(todolistId: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
-    },
-    changeTodo(todolistId: string, title: string) {
-        return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
-    },
-    //methods on tasks
-    fetchTasks(todolistId: string) {
-        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
-    },
-    removeTask(todoListId: string, taskId: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`)
-    },
-    addTask(todoListId: string, taskTitle: string) {
-        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`,{title:taskTitle} )
-    },
-    changeTask(todoListId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
-    }
-}
-
-export const loginApi = {
-    //methods on login
-    logIn() {
-        return instance.post("auth/login")
-    }
-}
 
 
