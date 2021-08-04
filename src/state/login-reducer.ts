@@ -4,27 +4,29 @@ import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 const initialState = {
-    email: "",
-    password: "",
-    rememberMe: false,
+    isLoggedIn: false
+}
+
+export type InitialLoginStateType = {
+    isLoggedIn: boolean
 }
 
 //login reducer
-export const loginReducer = (loginState: LogInType = initialState, action: ActionType):LogInType => {
+export const loginReducer = (loginState: InitialLoginStateType = initialState, action: ActionType):InitialLoginStateType => {
     switch (action.type) {
-        case "SET-LOGIN":
-            return {...loginState, email: action.loginInfo.email, password: action.loginInfo.password, rememberMe: action.loginInfo.rememberMe}
+        case "login/SET-IS-LOGGED-IN":
+            return {...loginState, isLoggedIn: !action.value}
         default:
             return loginState;
     }
 }
 
 //action creators
-export const loginAC = (loginInfo: LogInType) => ({type: "SET-LOGIN", loginInfo } as const);
+export const setIsloggedInAC = (value: boolean) => ({type: "login/SET-IS-LOGGED-IN", value} as const);
 
 //action types
-export type LoginACType = ReturnType<typeof loginAC>;
-export type ActionType = LoginACType;
+export type IsLoggedInType = ReturnType<typeof setIsloggedInAC>;
+export type ActionType = IsLoggedInType;
 
 //thunk
 export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) => {
@@ -33,7 +35,7 @@ export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) 
         .then( (res) => {
             console.log(res.data.data.userId)
             if(res.data.resultCode === 0) {
-                dispatch(loginAC(loginInfo))
+                dispatch(setIsloggedInAC(loginInfo))
                 dispatch(setAppStatusAC("succeeded"))
             } else {
                 handleServerAppError(res.data, dispatch)
