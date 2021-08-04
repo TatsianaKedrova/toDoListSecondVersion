@@ -153,7 +153,8 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
     todoApi.changeTask(todoListId, taskId, apiModel)
         .then(res => {
             if(res.data.resultCode === 0) {
-                dispatch(UpdateTaskAC(taskId, domainModel, todoListId))
+                alert("Taniusha is genius!")
+                // dispatch(UpdateTaskAC(taskId, domainModel, todoListId))
                 dispatch(setAppStatusAC("succeeded"))
             } else {
                 handleServerAppError(res.data, dispatch);
