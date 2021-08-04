@@ -40,6 +40,9 @@ export const todoApi = {
 export const authApi = {
     logIn(loginInfo: LogInType) {
         return instance.post<ResponseType<{ userId: number }>>("auth/login", loginInfo)
+    },
+    me() {
+        return instance.get<ResponseType<AuthMeResponseType>>("auth/me")
     }
 }
 
@@ -106,6 +109,12 @@ export type LogInType = {
     password: string
     rememberMe?: boolean
     captcha?: string
+}
+
+export type AuthMeResponseType = {
+    id: number
+    email: string
+    login: string
 }
 
 

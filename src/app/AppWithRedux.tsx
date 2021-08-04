@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import {AppBar, Button, Container, IconButton,Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Menu} from "@material-ui/icons";
 import ErrorSnackbar from "../components/ErrorSnackBar/ErrorSnackBar";
@@ -18,13 +18,14 @@ type AppPropsType = {
 
 function AppWithRedux({demo = false}: AppPropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
-    // const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+    const isInitialised = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized);
 
-    // console.log(isLoggedIn);
-    /*if(isLoggedIn) {
-        return <Redirect to={"/login"} />
+    if(!isInitialised) {
+        return <div style={{position: "fixed", width: "100%", top: "30%", textAlign: "center"}}>
+            <CircularProgress />
+        </div>
     }
-*/
+
     return (
         <div className="App">
 

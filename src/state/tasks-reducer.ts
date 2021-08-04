@@ -15,7 +15,7 @@ const initState: TasksStateType = {};
 // tasks reducer
 export const tasksReducer = (state: TasksStateType = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
-        case "ADD-TASK":
+        case "tasks/ADD-TASK":
             console.log(action)
             let newTask = action.task;
             const copyState = {...state};
@@ -24,12 +24,12 @@ export const tasksReducer = (state: TasksStateType = initState, action: ActionTy
                 ...copyState,
                 [newTask.todoListId]: updatedTasks
             }
-        case "REMOVE-TASK": {
+        case "tasks/REMOVE-TASK": {
             let copyState = {...state};
             copyState[action.todoListId] = copyState[action.todoListId].filter(task => task.id !== action.taskID)
             return copyState;
         }
-        case "UPDATE-TASK": {
+        case "tasks/UPDATE-TASK": {
             let copyState = {...state};
             copyState[action.todoListId] = copyState[action.todoListId].map(task => task.id === action.taskID ? {
                 ...task,
@@ -38,21 +38,21 @@ export const tasksReducer = (state: TasksStateType = initState, action: ActionTy
             return copyState;
         }
 
-        case 'ADD-TODOLIST':
+        case 'todolists/ADD-TODOLIST':
             return {...state, [action.todolist.id]: []}
-        case "REMOVE-TODOLIST": {
+        case "todolists/REMOVE-TODOLIST": {
             let copyState = {...state};
             delete copyState[action.todoListID]
             return copyState;
         }
-        case "SET-TODOLISTS": {
+        case "todolists/SET-TODOLISTS": {
             const copyState = {...state};
             action.todoLists.forEach(tl => {
                 copyState[tl.id] = []
             })
             return copyState;
         }
-        case "SET-TASK": {
+        case "tasks/SET-TASK": {
             return {...state, [action.todoListId]: action.tasks}
         }
         default:
@@ -61,21 +61,21 @@ export const tasksReducer = (state: TasksStateType = initState, action: ActionTy
 }
 
 //action creators
-export const AddTaskAC = (task: TaskType) => ({type: "ADD-TASK", task} as const);
+export const AddTaskAC = (task: TaskType) => ({type: "tasks/ADD-TASK", task} as const);
 export const RemoveTaskAC = (taskID: string, todoListId: string) => ({
-    type: "REMOVE-TASK",
+    type: "tasks/REMOVE-TASK",
     taskID,
     todoListId
 } as const);
 export const UpdateTaskAC = (taskID: string, model: UpdateDomainTaskModelType, todoListId: string) => ({
-    type: "UPDATE-TASK",
+    type: "tasks/UPDATE-TASK",
     taskID,
     model,
     todoListId
 } as const);
 
 export const SetTaskAC = (tasks: Array<TaskType>, todoListId: string) => ({
-    type: "SET-TASK",
+    type: "tasks/SET-TASK",
     tasks,
     todoListId
 } as const);

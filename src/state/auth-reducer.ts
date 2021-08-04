@@ -4,7 +4,7 @@ import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 const initialState = {
-    isLoggedIn: false as boolean
+    isLoggedIn: false
 }
 export type InitialStateType = typeof initialState;
 
