@@ -21,10 +21,6 @@ export const authReducer = (loginState: InitialStateType = initialState, action:
 //action creators
 export const setIsloggedInAC = (value: boolean) => ({type: "login/SET-IS-LOGGED-IN", value} as const);
 
-//action types
-export type IsLoggedInType = ReturnType<typeof setIsloggedInAC>;
-export type ActionType = IsLoggedInType;
-
 //thunk
 export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) => {
     dispatch(setAppStatusAC("loading"))
@@ -42,5 +38,9 @@ export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) 
             handleServerNetworkError(error, dispatch)
         })
 }
+
+//action types
+export type IsLoggedInType = ReturnType<typeof setIsloggedInAC>;
+export type ActionType = IsLoggedInType;
 
 type ThunkLoginDispatch = Dispatch<ActionType | AppSetStatusType | SetAppErrorType>

@@ -1,13 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import './App.css';
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {Menu} from "@material-ui/icons";
 import ErrorSnackbar from "../components/ErrorSnackBar/ErrorSnackBar";
 import {TodolistsList} from "../components/TodolistsList/TodolistsList";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
-import {RequestStatusType} from "../state/app-reducer";
+import {initialiseAppTC, RequestStatusType} from "../state/app-reducer";
 import {Login} from "../features/Login/Login";
 import {Switch, Route, Redirect} from "react-router-dom";
 
@@ -19,6 +19,11 @@ type AppPropsType = {
 function AppWithRedux({demo = false}: AppPropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const isInitialised = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(initialiseAppTC())
+    }, [])
 
     if(!isInitialised) {
         return <div style={{position: "fixed", width: "100%", top: "30%", textAlign: "center"}}>
@@ -45,7 +50,7 @@ function AppWithRedux({demo = false}: AppPropsType) {
             </AppBar>
             <Container fixed>
                 <Switch>
-                    <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
+                    <Route exact path={'/todolist-it-incubator'} render={() => <TodolistsList demo={demo}/>}/>
                     <Route path={'/login'} render={() => <Login/>}/>
                     <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                     <Redirect from={'*'} to={'/404'}/>

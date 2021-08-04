@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {authApi} from "../api/todolist-api";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {handleServerNetworkError} from "../utils/error-utils";
+import {IsLoggedInType, setIsloggedInAC} from "./auth-reducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 
@@ -32,15 +33,14 @@ export const setAppErrorAC = (error: null | string) => ({ type: "APP/SET-ERROR",
 export const setAppInitialisedAC = (isInitialised: boolean) => ({ type: "APP/SET-INITIALISED", isInitialised } as const);
 
 export const initialiseAppTC = () => (dispatch: DispatchAppThunkType) => {
-    dispatch(setAppStatusAC("loading"))
     authApi.me()
         .then(res => {
             if(res.data.resultCode === 0) {
-                dispatch(setAppInitialisedAC(true))
-                dispatch(setAppStatusAC("succeeded"))
-            } else {
+                dispatch(setIsloggedInAC(true))
+            } /*else {
                 handleServerAppError(res.data, dispatch)
-            }
+            }*/
+            dispatch(setAppInitialisedAC(true))
         })
         .catch(error => {
             handleServerNetworkError(error, dispatch)
@@ -53,4 +53,4 @@ export type SetAppErrorType = ReturnType<typeof setAppErrorAC>;
 export type SetAppInitialisedType = ReturnType<typeof setAppInitialisedAC>;
 
 export type ActionsType = AppSetStatusType | SetAppErrorType | SetAppInitialisedType;
-export type DispatchAppThunkType = Dispatch<ActionsType | AppSetStatusType | SetAppErrorType>;
+export type DispatchAppThunkType = Dispatch<ActionsType | AppSetStatusType | SetAppErrorType | IsLoggedInType>;
