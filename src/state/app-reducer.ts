@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {authApi} from "../api/todolist-api";
-import {handleServerNetworkError} from "../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {IsLoggedInType, setIsloggedInAC} from "./auth-reducer";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -8,7 +8,7 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
 const initialState = {
     status: 'idle' as RequestStatusType,
     error: null as string | null,
-    isInitialized: true
+    isInitialized: false
 }
 
 export type InitialStateType = typeof initialState;
@@ -37,9 +37,9 @@ export const initialiseAppTC = () => (dispatch: DispatchAppThunkType) => {
         .then(res => {
             if(res.data.resultCode === 0) {
                 dispatch(setIsloggedInAC(true))
-            } /*else {
+            } else {
                 handleServerAppError(res.data, dispatch)
-            }*/
+            }
             dispatch(setAppInitialisedAC(true))
         })
         .catch(error => {

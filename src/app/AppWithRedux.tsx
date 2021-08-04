@@ -19,9 +19,13 @@ type AppPropsType = {
 function AppWithRedux({demo = false}: AppPropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
     const isInitialised = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized);
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useDispatch();
 
+    console.log(isInitialised);
+
     useEffect(() => {
+
         dispatch(initialiseAppTC())
     }, [])
 
@@ -44,16 +48,16 @@ function AppWithRedux({demo = false}: AppPropsType) {
                     <Typography variant="h6">
                         TodoList
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit">{isLoggedIn && LogOut}</Button>
                 </Toolbar>
                 {status === "loading" && <LinearProgress color={"secondary"}/>}
             </AppBar>
             <Container fixed>
                 <Switch>
                     <Route exact path={'/todolist-it-incubator'} render={() => <TodolistsList demo={demo}/>}/>
-                    <Route path={'/login'} render={() => <Login/>}/>
-                    <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
-                    <Redirect from={'*'} to={'/404'}/>
+                    <Route path={'/todolist-it-incubator/login'} render={() => <Login/>}/>
+                    <Route path={'/todolist-it-incubator/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
+                    <Redirect from={'*'} to={'/todolist-it-incubator/404'}/>
                 </Switch>
             </Container>
         </div>
