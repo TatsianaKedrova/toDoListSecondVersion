@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import './App.css';
 import {AppBar, Button, CircularProgress, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -10,6 +10,7 @@ import {AppRootStateType} from "../state/store";
 import {initialiseAppTC, RequestStatusType} from "../state/app-reducer";
 import {Login} from "../features/Login/Login";
 import {Switch, Route, Redirect} from "react-router-dom";
+import {logOutTC} from "../state/auth-reducer";
 
 
 type AppPropsType = {
@@ -23,11 +24,17 @@ function AppWithRedux({demo = false}: AppPropsType) {
     const dispatch = useDispatch();
 
     console.log(isInitialised);
+    console.log(isLoggedIn);
 
     useEffect(() => {
 
         dispatch(initialiseAppTC())
     }, [])
+
+    const logOutHandler = useCallback(() => {
+        dispatch(logOutTC());
+    }, [])
+
 
     if(!isInitialised) {
         return <div style={{position: "fixed", width: "100%", top: "30%", textAlign: "center"}}>
@@ -48,7 +55,7 @@ function AppWithRedux({demo = false}: AppPropsType) {
                     <Typography variant="h6">
                         TodoList
                     </Typography>
-                    <Button color="inherit">{isLoggedIn && LogOut}</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log out</Button> }
                 </Toolbar>
                 {status === "loading" && <LinearProgress color={"secondary"}/>}
             </AppBar>

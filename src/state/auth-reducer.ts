@@ -39,6 +39,23 @@ export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) 
         })
 }
 
+export const logOutTC = () => (dispatch: ThunkLoginDispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    authApi.logOut()
+        .then( (res) => {
+            if(res.data.resultCode === 0) {
+                dispatch(setIsloggedInAC(false))
+                dispatch(setAppStatusAC("succeeded"))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
+
 //action types
 export type IsLoggedInType = ReturnType<typeof setIsloggedInAC>;
 export type ActionType = IsLoggedInType;
