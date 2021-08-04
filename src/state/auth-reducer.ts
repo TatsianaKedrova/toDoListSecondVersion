@@ -12,7 +12,7 @@ export type InitialLoginStateType = {
 }
 
 //login reducer
-export const loginReducer = (loginState: InitialLoginStateType = initialState, action: ActionType):InitialLoginStateType => {
+export const authReducer = (loginState: InitialLoginStateType = initialState, action: ActionType):InitialLoginStateType => {
     switch (action.type) {
         case "login/SET-IS-LOGGED-IN":
             return {...loginState, isLoggedIn: !action.value}
@@ -35,7 +35,7 @@ export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) 
         .then( (res) => {
             console.log(res.data.data.userId)
             if(res.data.resultCode === 0) {
-                dispatch(setIsloggedInAC(loginInfo))
+                dispatch(setIsloggedInAC(true))
                 dispatch(setAppStatusAC("succeeded"))
             } else {
                 handleServerAppError(res.data, dispatch)
