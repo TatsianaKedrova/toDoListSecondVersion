@@ -4,18 +4,15 @@ import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 const initialState = {
-    isLoggedIn: false
+    isLoggedIn: false as boolean
 }
-
-export type InitialLoginStateType = {
-    isLoggedIn: boolean
-}
+export type InitialStateType = typeof initialState;
 
 //login reducer
-export const authReducer = (loginState: InitialLoginStateType = initialState, action: ActionType):InitialLoginStateType => {
+export const authReducer = (loginState: InitialStateType = initialState, action: ActionType):InitialStateType => {
     switch (action.type) {
         case "login/SET-IS-LOGGED-IN":
-            return {...loginState, isLoggedIn: !action.value}
+            return {...loginState, isLoggedIn: action.value}
         default:
             return loginState;
     }
@@ -33,7 +30,6 @@ export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) 
     dispatch(setAppStatusAC("loading"))
     authApi.logIn(loginInfo)
         .then( (res) => {
-            console.log(res.data.data.userId)
             if(res.data.resultCode === 0) {
                 dispatch(setIsloggedInAC(true))
                 dispatch(setAppStatusAC("succeeded"))

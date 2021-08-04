@@ -17,9 +17,14 @@ type AppPropsType = {
 };
 
 function AppWithRedux({demo = false}: AppPropsType) {
-
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
+    // const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
 
+    // console.log(isLoggedIn);
+    /*if(isLoggedIn) {
+        return <Redirect to={"/login"} />
+    }
+*/
     return (
         <div className="App">
 
