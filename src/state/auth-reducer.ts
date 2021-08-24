@@ -1,13 +1,12 @@
 import {Dispatch} from "redux";
 import {authApi, LogInType} from "../api/todolist-api";
-import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
+import {setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedIn: false
 }
-// export type InitialStateType = typeof initialState;
 
 //redux Toolkit createSlice method
 const slice = createSlice({
@@ -21,9 +20,10 @@ const slice = createSlice({
 
 //login reducer
 export const authReducer = slice.reducer;
+const {setIsloggedInAC}= slice.actions;
 
 //thunk
-export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) => {
+export const loginTC = (loginInfo: LogInType) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC("loading"))
     authApi.logIn(loginInfo)
         .then( (res) => {
@@ -40,7 +40,7 @@ export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) 
         })
 }
 
-export const logOutTC = () => (dispatch: ThunkLoginDispatch) => {
+export const logOutTC = () => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC("loading"))
     authApi.logOut()
         .then( (res) => {
@@ -59,6 +59,3 @@ export const logOutTC = () => (dispatch: ThunkLoginDispatch) => {
 
 //action types
 export type IsLoggedInType = ReturnType<typeof setIsloggedInAC>;
-export type ActionType = IsLoggedInType;
-
-type ThunkLoginDispatch = Dispatch<ActionType | AppSetStatusType | SetAppErrorType>
