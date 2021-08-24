@@ -36,7 +36,7 @@ export const initialiseAppTC = () => (dispatch: DispatchAppThunkType) => {
     authApi.me()
         .then(res => {
             if(res.data.resultCode === 0) {
-                dispatch(setIsloggedInAC(true))
+                dispatch(setIsloggedInAC({value: true}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
