@@ -2,24 +2,25 @@ import {Dispatch} from "redux";
 import {authApi, LogInType} from "../api/todolist-api";
 import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
+import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedIn: false
 }
-export type InitialStateType = typeof initialState;
+// export type InitialStateType = typeof initialState;
+
+//redux Toolkit createSlice method
+const slice = createSlice({
+    initialState,
+    name: "auth",
+    reducers: {
+        setIsloggedInAC(state, action: any) {
+            state.isLoggedIn = action.value
+        }}
+})
 
 //login reducer
-export const authReducer = (loginState: InitialStateType = initialState, action: ActionType):InitialStateType => {
-    switch (action.type) {
-        case "login/SET-IS-LOGGED-IN":
-            return {...loginState, isLoggedIn: action.value}
-        default:
-            return loginState;
-    }
-}
-
-//action creators
-export const setIsloggedInAC = (value: boolean) => ({type: "login/SET-IS-LOGGED-IN", value} as const);
+export const authReducer = slice.reducer;
 
 //thunk
 export const loginTC = (loginInfo: LogInType) => (dispatch: ThunkLoginDispatch) => {
