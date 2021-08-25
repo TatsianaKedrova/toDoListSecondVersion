@@ -53,36 +53,6 @@ const slice = createSlice({
 
 //todolist reducer
 export const todolistReducer = slice.reducer;
-/*export const _todolistReducer = (todoLists: Array<TodolistDomainType> = initialState, action: ActionType): Array<TodolistDomainType> => {
-    switch (action.type) {
-        case "todolists/REMOVE-TODOLIST":
-            let copyState = [...todoLists];
-            return copyState.filter(tl => tl.id !== action.todoListID);
-
-        case "todolists/ADD-TODOLIST": {
-            let copyState = [...todoLists];
-            const newTodoList: TodolistDomainType = {...action.todolist, filter: "all", todolistStatus: "idle"};
-            return [newTodoList, ...copyState];
-        }*/
-        /*case "todolists/CHANGE-TODOLIST-TITLE": {
-            let copyState = [...todoLists];
-            return copyState.map(tl => tl.id === action.todoListId ? {...tl, title: action.titleTL} : tl)
-        }*/
-        /*case "todolists/CHANGE-TODOLIST-FILTER": {
-            let copyState = [...todoLists];
-            return copyState.map(tl => tl.id === action.todoListId ? {...tl, filter: action.newFilterValue} : tl)
-        }
-        case "todolists/CHANGE-TODOLIST-STATUS": {
-            const copyState = [...todoLists];
-            return copyState.map(tl => tl.id === action.todoListId ? {...tl, todolistStatus: action.status} : tl);
-        }
-        case "todolists/SET-TODOLISTS": {
-            return action.todoLists.map(tl => ({...tl, filter: 'all', todolistStatus: "idle"}));
-        }
-
-        default:
-            return todoLists;*/
-
 
 //action creators
 export const { removeTodoListAC, addTodoListAC, changeTodoListTitleAC, changeTodoListFilterAC, setTodoListsAC, changeTodolistStatusAC } = slice.actions;
@@ -148,15 +118,6 @@ export const changeTodolistTitleTC = (todoListId: string, title: string) => (dis
             dispatch(setAppStatusAC({status: "succeeded"}))
         })
 }
-
-
-/*export type ActionType =
-    RemoveTodolistType
-    | AddTodoListType
-    | ChangeTodoListTitleType
-    | ChangeTodoListFilterType
-    | SetTodoListsType
-    | ChangeTodolistStatusType*/
 
 
 
