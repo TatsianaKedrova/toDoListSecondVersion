@@ -2,7 +2,7 @@ import {AddTodoListType, RemoveTodolistType, SetTodoListsType} from "./todolist-
 import {TaskPriorities, TaskStatuses, TaskType, todoApi, UpdateTaskModelType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
-import {AppSetStatusType, SetAppErrorType, setAppStatusAC} from "./app-reducer";
+import {setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 //types
@@ -82,12 +82,12 @@ export const SetTaskAC = (tasks: Array<TaskType>, todoListId: string) => ({
 
 //thunk
 export const fetchTasksTC = (todoListId: string) => {
-    return (dispatch: DispatchTaskThunkType) => {
-        dispatch(setAppStatusAC("loading"))
+    return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC({status: "loading"}))
         todoApi.fetchTasks(todoListId)
             .then(res => {
                 dispatch(SetTaskAC(res.data.items, todoListId))
-                dispatch(setAppStatusAC("succeeded"))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             })
             .catch( (error) => {
                handleServerNetworkError(error, dispatch)
@@ -96,14 +96,14 @@ export const fetchTasksTC = (todoListId: string) => {
 }
 
 export const addTaskTC = (todoListId: string, taskTitle: string) => {
-    return (dispatch: DispatchTaskThunkType) => {
-        dispatch(setAppStatusAC("loading"))
+    return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC({status: "loading"}))
         todoApi.addTask(todoListId, taskTitle)
             .then(res => {
 
                 if (res.data.resultCode === 0) {
                     dispatch(AddTaskAC(res.data.data.item))
-                    dispatch(setAppStatusAC("succeeded"))
+                    dispatch(setAppStatusAC({status: "succeeded"}))
                 } else {
                     handleServerAppError(res.data, dispatch)
                 }
@@ -114,13 +114,13 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
     }
 }
 
-export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: DispatchTaskThunkType) => {
-    dispatch(setAppStatusAC("loading"))
+export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: "loading"}))
     todoApi.removeTask(todoListId, taskId)
         .then((res) => {
             if(res.data.resultCode === 0) {
                 dispatch(RemoveTaskAC(taskId, todoListId))
-                dispatch(setAppStatusAC("succeeded"))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -130,7 +130,7 @@ export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: D
         })
 }
 
-export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todoListId: string) => (dispatch: DispatchTaskThunkType, getState: () => AppRootStateType) => {
+export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todoListId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
 
     const state = getState();
     const task = state.tasks[todoListId].find(task => task.id === taskId)
@@ -149,13 +149,13 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
         startDate: task.startDate,
         ...domainModel
     }
-    dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatusAC({status: "loading"}))
     todoApi.changeTask(todoListId, taskId, apiModel)
         .then(res => {
             if(res.data.resultCode === 0) {
                 alert("Taniusha is genius!")
                 // dispatch(UpdateTaskAC(taskId, domainModel, todoListId))
-                dispatch(setAppStatusAC("succeeded"))
+                dispatch(setAppStatusAC({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch);
             }
@@ -191,7 +191,7 @@ type ActionType =
     | SetTodoListsType
     | SetTaskType
 
-export type DispatchTaskThunkType = Dispatch<ActionType | AppSetStatusType | SetAppErrorType>;
+
 
 
 

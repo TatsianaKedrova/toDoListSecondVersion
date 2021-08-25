@@ -34,25 +34,10 @@ const slice = createSlice({
 
 //reducer
 export const appReducer = slice.reducer;
-export const {setAppStatusAC, setAppErrorAC, setAppInitialisedAC} = slice.actions;
-
-/*(state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-    switch(action.type) {
-        case "APP/SET-STATUS":
-            return {...state, status: action.status}
-        case "APP/SET-ERROR":
-            return {...state, error: action.error}
-        case "APP/SET-INITIALISED":
-            return {...state, isInitialized: action.isInitialised}
-        default:
-            return state;
-    }
-}*/
 
 //action creators
-/*export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status } as const);
-export const setAppErrorAC = (error: null | string) => ({ type: "APP/SET-ERROR", error } as const);
-export const setAppInitialisedAC = (isInitialised: boolean) => ({ type: "APP/SET-INITIALISED", isInitialised } as const);*/
+export const {setAppStatusAC, setAppErrorAC, setAppInitialisedAC} = slice.actions;
+
 
 export const initialiseAppTC = () => (dispatch: Dispatch) => {
     authApi.me()
@@ -67,13 +52,4 @@ export const initialiseAppTC = () => (dispatch: Dispatch) => {
         .catch(error => {
             handleServerNetworkError(error, dispatch)
         })
-}
-
-//action types
-/*export type AppSetStatusType = ReturnType<typeof setAppStatusAC>;
-export type SetAppErrorType = ReturnType<typeof setAppErrorAC>;
-export type SetAppInitialisedType = ReturnType<typeof setAppInitialisedAC>;*/
-
-/*
-export type ActionsType = AppSetStatusType | SetAppErrorType | SetAppInitialisedType;
-export type DispatchAppThunkType = Dispatch<ActionsType | AppSetStatusType | SetAppErrorType | IsLoggedInType>;*/
+};

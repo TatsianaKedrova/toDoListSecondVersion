@@ -6,7 +6,7 @@ import {
     tasksReducer,
     TasksStateType
 } from './tasks-reducer';
-import {AddTodoListAC, RemoveTodoListAC, SetTodoListsAC} from "./todolist-reducer";
+import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolist-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
 import {v1} from "uuid";
 
@@ -240,7 +240,7 @@ test('new array should be added when new todolist is added', () => {
         title: "Todo1"
     }
 
-    const action = AddTodoListAC(todo);
+    const action = addTodoListAC(todo);
 
     const endState = tasksReducer(startState, action)
 
@@ -257,7 +257,7 @@ test('new array should be added when new todolist is added', () => {
 
 test('property with todolistId should be deleted', () => {
 
-    const action = RemoveTodoListAC("todolistId2");
+    const action = removeTodoListAC("todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -270,7 +270,7 @@ test('property with todolistId should be deleted', () => {
 
 test("empty arrays should be added when we set todoLists", () => {
 
-    const action = SetTodoListsAC([
+    const action = setTodoListsAC([
         {id: todolistId1, title: "What to learn", addedDate: new Date().getDate(), order: Math.random()},
         {id: todolistId2, title: "What to buy", addedDate: new Date().getDate(), order: Math.random()}
     ]);
