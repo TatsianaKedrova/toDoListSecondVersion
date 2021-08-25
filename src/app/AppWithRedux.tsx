@@ -13,6 +13,7 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import {logOutTC} from "../state/auth-reducer";
 
 
+
 type AppPropsType = {
     demo?: boolean
 };
