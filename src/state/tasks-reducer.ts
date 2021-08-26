@@ -18,6 +18,10 @@ const slice = createSlice({
     name: "tasks",
     reducers: {
         addTaskAC(state, action: PayloadAction<{task: TaskType}>) {
+            let newTask = action.payload.task;
+            const updatedTasks = [newTask, ...state[newTask.todoListId]];
+            return {...state,
+                 [newTask.todoListId]: updatedTasks}
 
         },
         removeTaskAC(state, action: PayloadAction<{taskID: string, todoListId: string}>) {
