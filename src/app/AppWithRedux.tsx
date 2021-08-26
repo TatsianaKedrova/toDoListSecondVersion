@@ -24,9 +24,6 @@ function AppWithRedux({demo = false}: AppPropsType) {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useDispatch();
 
-    console.log(isInitialised);
-    console.log(isLoggedIn);
-
     useEffect(() => {
 
         dispatch(initialiseAppTC())

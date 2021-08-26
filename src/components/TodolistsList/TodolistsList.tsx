@@ -22,14 +22,12 @@ export type TodolistsListPropsType = {
 }
 
 export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) => {
-    console.log("I am TodoList");
     const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todoLists);
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
-
-
     const dispatch = useDispatch();
 
+    console.log(tasks);
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
@@ -74,7 +72,7 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) 
     }, [dispatch]);
 
     const changeTodoListFilter = useCallback((newFilterValue: FilterValuesType, todoListID: string) => {
-        const action = changeTodoListFilterAC(newFilterValue, todoListID);
+        const action = changeTodoListFilterAC({newFilterValue: newFilterValue,todoListId: todoListID});
         dispatch(action);
     }, [dispatch]);
 
@@ -99,7 +97,6 @@ export const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) 
             <Grid item={true} key={tl.id}>
                 <Paper elevation={6} style={{padding: "20px"}}>
                     <TodoList
-
                         id={tl.id}
                         title={tl.title}
                         todoListFilter={tl.filter}

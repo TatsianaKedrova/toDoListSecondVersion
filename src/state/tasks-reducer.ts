@@ -4,6 +4,7 @@ import {AppRootStateType} from "./store";
 import {setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolist-reducer";
 
 //types
 export type TasksStateType = {
@@ -36,8 +37,9 @@ const slice = createSlice({
 export const { addTaskAC, removeTaskAC, updateTaskAC, setTaskAC } = slice.actions;
 
 // tasks reducer
-export const tasksReducer = slice.reducer;
-export const _tasksReducer = (state: TasksStateType = initState, action:any): TasksStateType => {
+export const _tasksReducer = slice.reducer;
+export const tasksReducer = (state: TasksStateType = initState, action:any): TasksStateType => {
+
     switch (action.type) {
         case "tasks/ADD-TASK":
             console.log(action)
@@ -61,16 +63,16 @@ export const _tasksReducer = (state: TasksStateType = initState, action:any): Ta
             } : task);
             return copyState;
         }
-        case 'todolists/ADD-TODOLIST':
-            return {...state, [action.todolist.id]: []}
-        case "todolists/REMOVE-TODOLIST": {
+        case removeTodoListAC.type:
+            return {...state, [action.payload.todolist.id]: []}
+        case addTodoListAC.type: {
             let copyState = {...state};
-            delete copyState[action.todoListID]
+            delete copyState[action.payload.todoListID]
             return copyState;
         }
-        case "todolists/SET-TODOLISTS": {
+        case setTodoListsAC.type: {
             const copyState = {...state};
-            action.todoLists.forEach(tl => {
+            action.payload.todoLists.forEach((tl : any) => {
                 copyState[tl.id] = []
             })
             return copyState;
@@ -82,8 +84,6 @@ export const _tasksReducer = (state: TasksStateType = initState, action:any): Ta
             return state;
     }
 }
-
-
 
 //thunks
 export const fetchTasksTC = (todoListId: string) => {

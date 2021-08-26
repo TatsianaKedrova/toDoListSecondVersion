@@ -45,7 +45,6 @@ const slice = createSlice({
         changeTodolistStatusAC(state, action: PayloadAction<{todoListId: string, status: RequestStatusType}>) {
             const index = state.findIndex(todolist => todolist.id === action.payload.todoListId)
             if (index !== -1) state[index].todolistStatus = action.payload.status;
-
             // state.map(tl => tl.id === action.payload.todoListId ? {...tl, todolistStatus: action.payload.status} : tl);
         }
     }
