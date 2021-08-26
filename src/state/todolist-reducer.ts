@@ -55,7 +55,7 @@ export const todolistReducer = slice.reducer;
 
 //action creators
 export const { removeTodoListAC, addTodoListAC, changeTodoListTitleAC, changeTodoListFilterAC, setTodoListsAC, changeTodolistStatusAC } = slice.actions;
-
+debugger;
 //thunk
 export const fetchTodoListsTC = () => {
     return (dispatch: Dispatch) => {
