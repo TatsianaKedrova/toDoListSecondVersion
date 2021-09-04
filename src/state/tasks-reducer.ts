@@ -18,43 +18,45 @@ const slice = createSlice({
     initialState: initState,
     name: "tasks",
     reducers: {
-        addTaskAC(state, action: PayloadAction<{task: TaskType}>) {
+        addTaskAC(state, action: PayloadAction<{ task: TaskType }>) {
             state[action.payload.task.todoListId].unshift(action.payload.task)
         },
-        removeTaskAC(state, action: PayloadAction<{taskID: string, todoListId: string}>) {
+        removeTaskAC(state, action: PayloadAction<{ taskID: string, todoListId: string }>) {
             const tasks = state[action.payload.todoListId];
             const index = tasks.findIndex(task => task.id === action.payload.taskID);
-            if(index > -1) {
+            if (index > -1) {
                 tasks.splice(index, 1)
             }
         },
-        updateTaskAC(state, action: PayloadAction<{taskID: string, model: UpdateDomainTaskModelType, todoListId: string}>) {
+        updateTaskAC(state, action: PayloadAction<{ taskID: string, model: UpdateDomainTaskModelType, todoListId: string }>) {
             const tasks = state[action.payload.todoListId];
             const index = tasks.findIndex(task => task.id === action.payload.taskID);
-            if(index > -1) {
+            if (index > -1) {
                 tasks[index] = {...tasks[index], ...action.payload.model}
             }
         },
-        setTaskAC(state, action: PayloadAction<{tasks: Array<TaskType>, todoListId: string}>) {
-                state[action.payload.todoListId] = action.payload.tasks;
+        setTaskAC(state, action: PayloadAction<{ tasks: Array<TaskType>, todoListId: string }>) {
+            state[action.payload.todoListId] = action.payload.tasks;
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(addTodoListAC, (state, action: PayloadAction<{ todolist: TodolistType }>) => {})
-            .addCase(removeTodoListAC, (state, action: PayloadAction<{todoListID: string}>) => {})
-            .addCase(setTodoListsAC, (state, action: PayloadAction<{todoLists: Array<TodolistType>}>) => {})
-        /*{
-           [addTodoListAC.type]: (state, action: PayloadAction<{todolist: TodolistType}>) => {},
-           [removeTodoListAC.type]: (state, action: PayloadAction<{}>) => {},
-           [setTodoListsAC.type]: (state, action: PayloadAction<{}>) => {},
-       }*/
-
+            .addCase(addTodoListAC, (state, action: PayloadAction<{ todolist: TodolistType }>) => {
+                state[action.payload.todolist.id] = [];
+            })
+            .addCase(removeTodoListAC, (state, action: PayloadAction<{ todoListID: string }>) => {
+                delete state[action.payload.todoListID]
+            })
+            .addCase(setTodoListsAC, (state, action: PayloadAction<{ todoLists: Array<TodolistType> }>) => {
+                action.payload.todoLists.forEach(tl => {
+                    state[tl.id] = []
+                })
+            })
     }
 });
 
 //action creators
-export const { addTaskAC, removeTaskAC, updateTaskAC, setTaskAC } = slice.actions; //action creators
+export const {addTaskAC, removeTaskAC, updateTaskAC, setTaskAC} = slice.actions; //action creators
 
 // tasks reducer
 export const tasksReducer = slice.reducer;
@@ -68,8 +70,8 @@ export const fetchTasksTC = (todoListId: string) => {
                 dispatch(setTaskAC({tasks: res.data.items, todoListId: todoListId}))
                 dispatch(setAppStatusAC({status: "succeeded"}))
             })
-            .catch( (error) => {
-               handleServerNetworkError(error, dispatch)
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -87,7 +89,7 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
                     handleServerAppError(res.data, dispatch)
                 }
             })
-            .catch( (error) => {
+            .catch((error) => {
                 handleServerNetworkError(error, dispatch)
             })
     }
@@ -97,22 +99,22 @@ export const removeTaskTC = (todoListId: string, taskId: string) => (dispatch: D
     dispatch(setAppStatusAC({status: "loading"}))
     todoApi.removeTask(todoListId, taskId)
         .then((res) => {
-            if(res.data.resultCode === 0) {
+            if (res.data.resultCode === 0) {
                 dispatch(removeTaskAC({taskID: taskId, todoListId: todoListId}))
                 dispatch(setAppStatusAC({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
         })
-        .catch( (error) => {
+        .catch((error) => {
             handleServerNetworkError(error, dispatch)
         })
 }
 
-export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todoListId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+export const updateTaskTC = (taskID: string, model: UpdateDomainTaskModelType, todoListId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
 
     const state = getState();
-    const task = state.tasks[todoListId].find(task => task.id === taskId)
+    const task = state.tasks[todoListId].find(task => task.id === taskID)
 
     if (!task) {
         console.warn("Task not found");
@@ -126,19 +128,19 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
         deadline: task.deadline,
         completed: task.completed,
         startDate: task.startDate,
-        ...domainModel
+        ...model
     }
     dispatch(setAppStatusAC({status: "loading"}))
-    todoApi.changeTask(todoListId, taskId, apiModel)
+    todoApi.changeTask(todoListId, taskID, apiModel)
         .then(res => {
-            if(res.data.resultCode === 0) {
-                // dispatch(UpdateTaskAC(taskId, domainModel, todoListId))
+            if (res.data.resultCode === 0) {
+                dispatch(updateTaskAC({taskID, model, todoListId}))
                 dispatch(setAppStatusAC({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch);
             }
         })
-        .catch( (error) => {
+        .catch((error) => {
             handleServerNetworkError(error, dispatch);
         })
 }
