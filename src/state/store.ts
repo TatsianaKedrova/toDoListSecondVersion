@@ -14,13 +14,17 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
+//this is type of rootreducer function by itself
+export type RootReducerType = typeof rootReducer;
+
 // export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)
 });
 
-export type AppRootStateType = ReturnType<typeof rootReducer>
+//this is type of the state that is being returned from the rootReducer function
+export type AppRootStateType = ReturnType<RootReducerType>
 
 // @ts-ignore
 window.store = store;

@@ -3,7 +3,7 @@ import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 import {setAppStatusAC} from "./app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {addTodoListAC, removeTodoListAC, setTodoListsAC} from "./todolist-reducer";
 
 //types
@@ -12,6 +12,24 @@ export type TasksStateType = {
 }
 
 const initState: TasksStateType = {};
+
+//create async thunk
+export const fetchTasksTC = createAsyncThunk(
+    'tasks/fetchTasks',
+    (todoListId: string, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
+        todoApi.fetchTasks(todoListId)
+            .then(res => {
+                thunkAPI.dispatch(setTaskAC({tasks: res.data.items, todoListId: todoListId}))
+                thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, thunkAPI.dispatch)
+            })
+    }
+
+)
+
 
 //redux Toolkit createSlice method
 const slice = createSlice({
@@ -62,7 +80,7 @@ export const {addTaskAC, removeTaskAC, updateTaskAC, setTaskAC} = slice.actions;
 export const tasksReducer = slice.reducer;
 
 //thunks
-export const fetchTasksTC = (todoListId: string) => {
+export const fetchTasksTC_ = (todoListId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setAppStatusAC({status: "loading"}))
         todoApi.fetchTasks(todoListId)
