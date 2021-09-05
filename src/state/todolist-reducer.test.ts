@@ -44,7 +44,7 @@ beforeEach(() => {
 
 test('correct todolist should be removed', () => {
 
-    const endState = todolistReducer(startState, removeTodoListAC(todolistId1))
+    const endState = todolistReducer(startState, removeTodoListAC({todoListID: todolistId1}))
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
@@ -52,7 +52,7 @@ test('correct todolist should be removed', () => {
 
 test('correct todolist should be added', () => {
 
-    const endState = todolistReducer(startState, addTodoListAC(newToDoList))
+    const endState = todolistReducer(startState, addTodoListAC({ todolist: newToDoList}))
 
     expect(endState.length).toBe(3);
     expect(endState[0].title).toBe("Silly");
@@ -61,7 +61,7 @@ test('correct todolist should be added', () => {
 test("todoList's title should be changed", () => {
     let title1 = "DanceStyles";
 
-    const endState = todolistReducer(startState, changeTodoListTitleAC(title1, todolistId1))
+    const endState = todolistReducer(startState, changeTodoListTitleAC({titleTL: title1, todoListId: todolistId1}))
 
     expect(endState.length).toBe(2);
     expect(endState[0].title).toBe(title1);
@@ -70,7 +70,7 @@ test("todoList's title should be changed", () => {
 test("todoList's filter should be changed", () => {
     let newFilterValue: FilterValuesType = "active";
 
-    const endState = todolistReducer(startState, changeTodoListFilterAC(newFilterValue, todolistId1))
+    const endState = todolistReducer(startState, changeTodoListFilterAC({newFilterValue: newFilterValue, todoListId: todolistId1}))
 
     expect(endState.length).toBe(2);
     expect(endState[0].filter).toBe(newFilterValue);
@@ -79,7 +79,7 @@ test("todoList's filter should be changed", () => {
 
 test("todoList's status should be changed", () => {
     let newStatus: RequestStatusType = "succeeded";
-    const endState = todolistReducer(startState, changeTodolistStatusAC(todolistId1, newStatus))
+    const endState = todolistReducer(startState, changeTodolistStatusAC({todoListId: todolistId1, status: newStatus}))
 
     expect(endState.length).toBe(2);
     expect(endState[0].todolistStatus).toBe(newStatus);
@@ -90,7 +90,7 @@ test('ids should be equals', () => {
     const startTasksState: TasksStateType = {};
     const startTodolistsState: Array<TodolistDomainType> = [];
 
-    const action = addTodoListAC(newToDoList);
+    const action = addTodoListAC({todolist: newToDoList});
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistReducer(startTodolistsState, action)
@@ -99,8 +99,8 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodolists = endTodolistsState[0].id;
 
-    expect(idFromTasks).toBe(action.todolist.id);
-    expect(idFromTodolists).toBe(action.todolist.id);
+    expect(idFromTasks).toBe(action.payload.todolist.id);
+    expect(idFromTodolists).toBe(action.payload.todolist.id);
 });
 
 test('todoLists should appear on the screen after initial rendering', () => {
@@ -109,7 +109,7 @@ test('todoLists should appear on the screen after initial rendering', () => {
         {id: todolistId1, title: "What to learn", addedDate: new Date().getDate(), order: Math.random()},
         {id: todolistId2, title: "What to buy", addedDate: new Date().getDate(), order: Math.random()}
     ]
-    const action = setTodoListsAC(todoLists);
+    const action = setTodoListsAC({todoLists: todoLists});
     const endState = todolistReducer(startState, action)
 
     expect(endState.length).toBe(2);

@@ -5,13 +5,15 @@ let startState: InitialStateType;
 beforeEach( () => {
     startState = {
         status: "idle",
-        error: null
+        error: null,
+        isInitialized: false
+
     }
 })
 
 test("request status type should be changed", () => {
 
-    const action = setAppStatusAC("loading");
+    const action = setAppStatusAC({status: "loading"});
     const endState = appReducer(startState, action);
 
     expect(endState.status).toBe("loading");
@@ -22,7 +24,7 @@ test("request status type should be changed", () => {
 
 test("error state should change", () => {
 
-    const action = setAppErrorAC("There is error");
+    const action = setAppErrorAC({error: "There is error"});
     const endState = appReducer(startState, action);
 
     expect(endState.status).toBe("idle");

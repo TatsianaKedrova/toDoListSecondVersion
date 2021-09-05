@@ -187,7 +187,8 @@ test('correct task should be deleted from correct array', () => {
 
 test('correct task should be added to correct array', () => {
 
-    const action = addTaskAC({task: {
+    //here we made payload as a task without adding extra object task
+    const action = addTaskAC({
         description: "new Task",
         todoListId: "todolistId2",
         title: "juice",
@@ -199,7 +200,7 @@ test('correct task should be added to correct array', () => {
         id: "tratata",
         completed: false,
         startDate: ""
-    }});
+    });
 
     const endState = tasksReducer(startState, action)
 

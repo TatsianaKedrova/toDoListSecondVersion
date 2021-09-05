@@ -18,8 +18,8 @@ const slice = createSlice({
     initialState: initState,
     name: "tasks",
     reducers: {
-        addTaskAC(state, action: PayloadAction<{ task: TaskType }>) {
-            state[action.payload.task.todoListId].unshift(action.payload.task)
+        addTaskAC(state, action: PayloadAction<TaskType>) {
+            state[action.payload.todoListId].unshift(action.payload)
         },
         removeTaskAC(state, action: PayloadAction<{ taskID: string, todoListId: string }>) {
             const tasks = state[action.payload.todoListId];
@@ -83,7 +83,7 @@ export const addTaskTC = (todoListId: string, taskTitle: string) => {
             .then(res => {
 
                 if (res.data.resultCode === 0) {
-                    dispatch(addTaskAC({task: res.data.data.item}))
+                    dispatch(addTaskAC(res.data.data.item))
                     dispatch(setAppStatusAC({status: "succeeded"}))
                 } else {
                     handleServerAppError(res.data, dispatch)
