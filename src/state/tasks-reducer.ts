@@ -28,12 +28,13 @@ export const fetchTasksTC = createAsyncThunk(
 
 export const removeTaskTC = createAsyncThunk (
     'tasks/removeTask',
-    (param: {todoListId: string, taskId: string}, thunkAPI) => {
+    (param: {taskId: string, todoListId: string}, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
-        return todoApi.removeTask(param.todoListId, param.taskId)
-            .then((res) => {
+        todoApi.removeTask(param.todoListId, param.taskId)
+            .then(() => {
                 thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
-                return {taskId, todoListId}
+                const action = removeTaskAC({taskID: param.taskId, todoListId: param.todoListId})
+                thunkAPI.dispatch(action);
             })
     });
 
@@ -64,13 +65,13 @@ const slice = createSlice({
         addTaskAC(state, action: PayloadAction<TaskType>) {
             state[action.payload.todoListId].unshift(action.payload)
         },
-        /*removeTaskAC(state, action: PayloadAction<{ taskID: string, todoListId: string }>) {
+        removeTaskAC(state, action: PayloadAction<{ taskID: string, todoListId: string }>) {
             const tasks = state[action.payload.todoListId];
             const index = tasks.findIndex(task => task.id === action.payload.taskID);
             if (index > -1) {
                 tasks.splice(index, 1)
             }
-        },*/
+        },
         updateTaskAC(state, action: PayloadAction<{ taskID: string, model: UpdateDomainTaskModelType, todoListId: string }>) {
             const tasks = state[action.payload.todoListId];
             const index = tasks.findIndex(task => task.id === action.payload.taskID);
@@ -95,18 +96,18 @@ const slice = createSlice({
             .addCase(fetchTasksTC.fulfilled, (state, action) => {
                 state[action.payload.todoListId] = action.payload.tasks;
             })
-            .addCase(removeTaskTC.fulfilled, (state, action) => {
+            /*.addCase(removeTaskTC.fulfilled, (state, action) => {
                 const tasks = state[action.payload.todoListId];
                 const index = tasks.findIndex(task => task.id === action.payload.taskId);
                 if (index > -1) {
                     tasks.splice(index, 1)
                 }
-            })
+            })*/
     }
 });
 
 //action creators
-export const {addTaskAC, updateTaskAC} = slice.actions; //action creators
+export const {addTaskAC, updateTaskAC, removeTaskAC} = slice.actions; //action creators
 
 // tasks reducer
 export const tasksReducer = slice.reducer;
