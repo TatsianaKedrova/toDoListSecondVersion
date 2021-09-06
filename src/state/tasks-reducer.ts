@@ -16,25 +16,21 @@ const initState: TasksStateType = {};
 //create async thunk
 export const fetchTasksTC = createAsyncThunk(
     'tasks/fetchTasks',
-    (todoListId: string, thunkAPI) => {
+    async (todoListId: string, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
-        return todoApi.fetchTasks(todoListId)
-            .then(res => {
+        const res = await todoApi.fetchTasks(todoListId);
                 const tasks = res.data.items;
                 thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
                 return {tasks, todoListId}
-            })
-    })
+    });
 
-export const removeTaskTC = createAsyncThunk (
+export const removeTaskTC = createAsyncThunk(
     'tasks/removeTask',
-    (param: {taskId: string, todoListId: string}, thunkAPI) => {
+    async (param: { taskId: string, todoListId: string }, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
-        return todoApi.removeTask(param.todoListId, param.taskId)
-            .then(() => {
-                thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
-                return {taskId: param.taskId, todoListId: param.todoListId}
-            })
+        const res = await todoApi.removeTask(param.todoListId, param.taskId);
+        thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+        return {taskId: param.taskId, todoListId: param.todoListId}
     });
 
 //redux Toolkit createSlice method
